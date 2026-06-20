@@ -4,6 +4,7 @@ import { useState, useCallback, FormEvent } from "react";
 import type { PharmacySearchResponse } from "@/lib/pharmacy-types";
 import { useLanguage } from "@/lib/i18n/context";
 import { OtcStoreCard } from "./OtcStoreCard";
+import { PharmacyResourceLinks } from "./PharmacyResourceLinks";
 
 const RADIUS_OPTIONS = [5, 10, 15, 25];
 
@@ -145,6 +146,11 @@ export function OtcStoreSearch() {
             {results.disclaimer && (
               <p className="text-xs text-muted mt-2">{results.disclaimer}</p>
             )}
+            {results.sources?.length > 0 && (
+              <p className="text-xs text-muted mt-1">
+                {t("store.sourcesLabel", { sources: results.sources.join(", ") })}
+              </p>
+            )}
           </div>
 
           {results.total === 0 ? (
@@ -163,6 +169,10 @@ export function OtcStoreSearch() {
           )}
 
           <p className="text-xs text-muted">{t("store.source")}</p>
+
+          {results.external_resources?.length > 0 && (
+            <PharmacyResourceLinks resources={results.external_resources} />
+          )}
         </div>
       )}
     </div>

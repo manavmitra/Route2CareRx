@@ -25,9 +25,22 @@ Copy your Supabase credentials into `.env.local`:
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+
+# Optional — enriches pharmacy search with Google GPS coordinates & hours (no duplicates)
+GOOGLE_MAPS_API_KEY=your-google-api-key
 ```
 
 The root `.env` file is also read by import scripts.
+
+### Auto-push to GitHub (optional)
+
+This repo includes a post-commit hook that pushes `main` to GitHub automatically after each commit:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+Vercel redeploys automatically whenever GitHub receives a push to `main`.
 
 ### 3. Set up the database
 

@@ -51,6 +51,7 @@ export const en: TranslationDict = {
   "med.disclaimerLead": "Not medical advice and not a prescription.",
   "med.disclaimerBody":
     "This guide is for education only and does not prescribe medications or replace a prescription from a licensed provider. Always read the Drug Facts label and ask a pharmacist or clinician if you are pregnant, elderly, take prescriptions, or are treating a child.",
+  "med.drugInfo": "Standard drug info:",
   "med.symptomTitle": "Search by symptom",
   "med.symptomDesc":
     "Conventional over-the-counter active ingredients only — no homeopathic products or home remedies.",
@@ -81,7 +82,19 @@ export const en: TranslationDict = {
   "store.noResultsHint":
     "Try expanding your radius. Grocery stores, Walmart, and Target also sell OTC medications even if not listed here.",
   "store.source":
-    "Store locations from the CMS NPI Registry. Distance is approximate — call ahead to confirm hours.",
+    "Results combine NPPES (NPI Registry), OpenStreetMap, HRSA health centers, and Google Places when configured. Duplicates are merged by location. Call ahead to confirm hours.",
+  "store.sourcesLabel": "Sources in this search: {sources}",
+  "store.moreResources": "More pharmacy & clinic directories",
+  "store.moreResourcesDesc":
+    "National directories for charitable clinics, health center pharmacies, and comprehensive pharmacy listings.",
+  "store.call": "Call {phone}",
+  "store.type.pharmacy": "Retail pharmacy",
+  "store.type.drugstore": "Pharmacy",
+  "store.type.clinic_pharmacy": "Clinic / health center pharmacy",
+  "store.source.nppes": "NPPES (NPI Registry)",
+  "store.source.openstreetmap": "OpenStreetMap",
+  "store.source.hrsa_clinic": "HRSA health center",
+  "store.source.google_places": "Google Places",
 
   "resources.eyebrow": "More ways to get care",
   "resources.title": "Additional resources",
@@ -189,6 +202,7 @@ export const es: TranslationDict = {
   "med.disclaimerLead": "No es consejo médico ni una receta.",
   "med.disclaimerBody":
     "Esta guía es solo para educación y no prescribe medicamentos ni reemplaza una receta de un proveedor autorizado. Siempre lea la etiqueta de Drug Facts y consulte a un farmacéutico o médico si está embarazada, es mayor, toma recetas o trata a un niño.",
+  "med.drugInfo": "Información estándar del medicamento:",
   "med.symptomTitle": "Buscar por síntoma",
   "med.symptomDesc":
     "Solo ingredientes activos OTC convencionales — sin productos homeopáticos ni remedios caseros.",
@@ -219,7 +233,19 @@ export const es: TranslationDict = {
   "store.noResultsHint":
     "Intente ampliar el radio. Supermercados, Walmart y Target también venden medicamentos OTC.",
   "store.source":
-    "Ubicaciones del Registro NPI de CMS. La distancia es aproximada — llame para confirmar horarios.",
+    "Resultados combinados de NPPES (Registro NPI), OpenStreetMap, centros HRSA y Google Places si está configurado. Los duplicados se fusionan por ubicación. Llame para confirmar horarios.",
+  "store.sourcesLabel": "Fuentes en esta búsqueda: {sources}",
+  "store.moreResources": "Más directorios de farmacias y clínicas",
+  "store.moreResourcesDesc":
+    "Directorios nacionales para clínicas benéficas, farmacias de centros de salud y listados completos de farmacias.",
+  "store.call": "Llamar {phone}",
+  "store.type.pharmacy": "Farmacia retail",
+  "store.type.drugstore": "Farmacia",
+  "store.type.clinic_pharmacy": "Farmacia de clínica / centro de salud",
+  "store.source.nppes": "NPPES (Registro NPI de CMS)",
+  "store.source.openstreetmap": "OpenStreetMap",
+  "store.source.hrsa_clinic": "Centro de salud HRSA",
+  "store.source.google_places": "Google Places",
 
   "resources.eyebrow": "Más formas de obtener atención",
   "resources.title": "Recursos adicionales",

@@ -1,5 +1,6 @@
 import type { OtcMedication } from "@/lib/otc-types";
 import { OtcProductList } from "./OtcProductList";
+import { RxNormLinks } from "./RxNormLinks";
 
 interface OtcMedicationCardProps {
   medication: OtcMedication;
@@ -89,19 +90,10 @@ export function OtcMedicationCard({ medication }: OtcMedicationCardProps) {
 
       <OtcProductList medication={medication} />
 
-      {medication.sourceUrl && (
-        <p className="mt-4 text-xs text-muted">
-          Label source:{" "}
-          <a
-            href={medication.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-accent hover:underline"
-          >
-            DailyMed ↗
-          </a>
-        </p>
-      )}
+      <RxNormLinks
+        drugName={medication.substanceName ?? medication.name}
+        dailyMedUrl={medication.sourceUrl || undefined}
+      />
     </article>
   );
 }

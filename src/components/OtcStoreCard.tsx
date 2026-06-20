@@ -1,11 +1,23 @@
+"use client";
+
 import type { OtcStore } from "@/lib/pharmacy-types";
+import { useLanguage } from "@/lib/i18n/context";
 import { formatDistance, formatPhone } from "@/lib/utils";
 
 interface OtcStoreCardProps {
   store: OtcStore;
 }
 
+function storeTypeKey(type: OtcStore["store_type"]): string {
+  return `store.type.${type}`;
+}
+
+function sourceKey(source: OtcStore["source"]): string {
+  return `store.source.${source}`;
+}
+
 export function OtcStoreCard({ store }: OtcStoreCardProps) {
+  const { t } = useLanguage();
   const phone = formatPhone(store.phone);
   const mapsQuery = encodeURIComponent(
     [store.name, store.address, store.city, store.state, store.zip]
@@ -28,8 +40,11 @@ export function OtcStoreCard({ store }: OtcStoreCardProps) {
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
-        <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-violet-50 text-violet-800 text-xs font-medium capitalize">
-          {store.store_type}
+        <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-violet-50 text-violet-800 text-xs font-medium">
+          {t(storeTypeKey(store.store_type))}
+        </span>
+        <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 text-xs font-medium">
+          {t(sourceKey(store.source))}
         </span>
       </div>
 
@@ -43,7 +58,7 @@ export function OtcStoreCard({ store }: OtcStoreCardProps) {
 
       {store.hours && (
         <p className="mt-2 text-sm">
-          <span className="font-medium">Hours:</span>{" "}
+          <span className="font-medium">{t("card.hours")}</span>{" "}
           <span className="text-muted">{store.hours}</span>
         </p>
       )}
@@ -51,10 +66,10 @@ export function OtcStoreCard({ store }: OtcStoreCardProps) {
       <div className="mt-5 flex flex-wrap gap-3">
         {phone && (
           <a
-            href={`tel:${store.phone}`}
+            href={`tel:${store.phone?.replace(/\D/g, "")}`}
             className="inline-flex items-center px-4 py-2 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark transition-colors"
           >
-            Call {phone}
+            {t("store.call", { phone })}
           </a>
         )}
         <a
@@ -63,7 +78,7 @@ export function OtcStoreCard({ store }: OtcStoreCardProps) {
           rel="noopener noreferrer"
           className="inline-flex items-center px-4 py-2 rounded-xl border border-border text-sm font-medium hover:bg-slate-50 transition-colors"
         >
-          Directions ↗
+          {t("card.directions")}
         </a>
       </div>
     </article>

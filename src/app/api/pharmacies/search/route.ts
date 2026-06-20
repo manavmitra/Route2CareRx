@@ -1,33 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
-import type { OtcStore } from "@/lib/pharmacy-types";
-import { haversineMiles, isValidZip, normalizeZip, formatPhone } from "@/lib/utils";
+import { PHARMACY_EXTERNAL_RESOURCES } from "@/lib/pharmacy-types";
+import { haversineMiles, isValidZip, normalizeZip } from "@/lib/utils";
+import { fetchClinicPharmacies } from "@/lib/pharmacy-sources/clinic-pharmacies";
+import {
+  fetchGooglePlacesPharmacies,
+  isGooglePlacesEnabled,
+} from "@/lib/pharmacy-sources/google-places";
+import { mergeGooglePlacesWithoutDuplicates } from "@/lib/pharmacy-sources/merge-google";
+import { fetchNpiPharmacies } from "@/lib/pharmacy-sources/npi";
+import { fetchOpenStreetMapPharmacies } from "@/lib/pharmacy-sources/openstreetmap";
+import { dedupeStores } from "@/lib/pharmacy-sources/types";
 
 const DEFAULT_RADIUS = 10;
 const MAX_RADIUS = 25;
-const MAX_RESULTS = 50;
-const MAX_ZIPS_TO_QUERY = 20;
-const NPI_URL = "https://npiregistry.cms.hhs.gov/api/";
-
-interface NpiAddress {
-  address_1: string;
-  address_purpose: string;
-  city: string;
-  state: string;
-  postal_code: string;
-  telephone_number?: string;
-}
-
-interface NpiResult {
-  number: string;
-  basic: {
-    organization_name?: string;
-    first_name?: string;
-    last_name?: string;
-  };
-  addresses: NpiAddress[];
-  taxonomies: { desc: string; primary: boolean }[];
-}
+const MAX_RESULTS = 75;
+const MAX_ZIPS_TO_QUERY = 30;
 
 interface ZipRow {
   zip: string;
@@ -35,69 +23,6 @@ interface ZipRow {
   state: string;
   latitude: number;
   longitude: number;
-}
-
-async function fetchPharmaciesForZip(zip: string): Promise<NpiResult[]> {
-  const params = new URLSearchParams({
-    version: "2.1",
-    postal_code: zip,
-    taxonomy_description: "Pharmacy",
-    limit: "200",
-  });
-
-  const res = await fetch(`${NPI_URL}?${params}`, {
-    next: { revalidate: 86400 },
-  });
-
-  if (!res.ok) return [];
-
-  const data = (await res.json()) as { results?: NpiResult[] };
-  return data.results ?? [];
-}
-
-function parseNpiPharmacy(
-  result: NpiResult,
-  originLat: number,
-  originLon: number,
-  zipCoords: Map<string, { lat: number; lon: number }>
-): OtcStore | null {
-  const loc =
-    result.addresses.find((a) => a.address_purpose === "LOCATION") ??
-    result.addresses[0];
-  if (!loc) return null;
-
-  const name =
-    result.basic.organization_name ??
-    [result.basic.first_name, result.basic.last_name].filter(Boolean).join(" ");
-
-  if (!name) return null;
-
-  const zip5 = loc.postal_code.replace(/\D/g, "").slice(0, 5);
-  const coords = zipCoords.get(zip5);
-  const lat = coords?.lat ?? originLat;
-  const lon = coords?.lon ?? originLon;
-
-  const isRetail = result.taxonomies.some(
-    (t) =>
-      t.primary &&
-      (t.desc.includes("Community/Retail") || t.desc === "Pharmacy")
-  );
-
-  return {
-    id: `npi/${result.number}`,
-    name,
-    brand: null,
-    address: loc.address_1,
-    city: loc.city,
-    state: loc.state,
-    zip: zip5,
-    phone: loc.telephone_number ? formatPhone(loc.telephone_number) : null,
-    hours: null,
-    store_type: isRetail ? "pharmacy" : "drugstore",
-    latitude: lat,
-    longitude: lon,
-    distance_miles: haversineMiles(originLat, originLon, lat, lon),
-  };
 }
 
 export async function GET(request: NextRequest) {
@@ -176,39 +101,69 @@ export async function GET(request: NextRequest) {
     ])
   );
 
-  const npiResults = await Promise.all(
-    nearbyZips.map((z) => fetchPharmaciesForZip(z.zip))
-  );
+  const context = {
+    originLat: originZip.latitude,
+    originLon: originZip.longitude,
+    radiusMiles: radius,
+    zipCoords,
+  };
 
-  const seen = new Set<string>();
-  const stores: OtcStore[] = [];
+  const zipList = nearbyZips.map((z) => z.zip);
 
-  for (const batch of npiResults) {
-    for (const result of batch) {
-      const store = parseNpiPharmacy(
-        result,
+  const [osmStores, nppesStores, clinicStores, googlePlaces] =
+    await Promise.all([
+      fetchOpenStreetMapPharmacies(context),
+      fetchNpiPharmacies(context, zipList, zip),
+      fetchClinicPharmacies(
+        supabase,
         originZip.latitude,
         originZip.longitude,
-        zipCoords
-      );
-      if (!store || seen.has(store.id)) continue;
-      if (store.distance_miles > radius) continue;
-      seen.add(store.id);
-      stores.push(store);
-    }
+        radius
+      ),
+      fetchGooglePlacesPharmacies(context),
+    ]);
+
+  let stores = dedupeStores([
+    ...osmStores,
+    ...nppesStores,
+    ...clinicStores,
+  ]).filter((s) => s.distance_miles <= radius);
+
+  const googleEnabled = isGooglePlacesEnabled();
+  if (googleEnabled && googlePlaces.length > 0) {
+    const merged = mergeGooglePlacesWithoutDuplicates(
+      stores,
+      googlePlaces,
+      originZip.latitude,
+      originZip.longitude,
+      radius
+    );
+    stores = dedupeStores(merged.stores).filter(
+      (s) => s.distance_miles <= radius
+    );
   }
 
   stores.sort((a, b) => a.distance_miles - b.distance_miles);
+  stores = stores.slice(0, MAX_RESULTS);
+
+  const sources: string[] = [];
+  if (nppesStores.length > 0) sources.push("NPPES (NPI Registry)");
+  if (osmStores.length > 0) sources.push("OpenStreetMap");
+  if (clinicStores.length > 0) sources.push("HRSA community health centers");
+  if (googleEnabled && googlePlaces.length > 0) {
+    sources.push("Google Places (hours & coordinates)");
+  }
 
   return NextResponse.json({
     zip,
     city: originZip.city,
     state: originZip.state,
     radius_miles: radius,
-    total: Math.min(stores.length, MAX_RESULTS),
-    stores: stores.slice(0, MAX_RESULTS),
-    source: "CMS NPI Registry",
+    total: stores.length,
+    stores,
+    sources,
+    external_resources: PHARMACY_EXTERNAL_RESOURCES,
     disclaimer:
-      "Licensed pharmacy locations from the CMS NPI Registry. Distance is approximate (based on ZIP code). Most grocery stores, Walmart, and Target also sell OTC products. Call ahead to confirm hours.",
+      "Pharmacy locations and phone numbers from NPPES (CMS NPI Registry), with GPS from OpenStreetMap and Google Places when configured. Hours from Google Places when available. Duplicate locations are merged by name, phone, and proximity. NCPDP DataQ is a separate licensed product for comprehensive inventory. Grocery and big-box stores may sell OTC even if not listed.",
   });
 }
