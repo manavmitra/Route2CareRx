@@ -2,48 +2,25 @@
  * Import licensed California pharmacy facilities from DCA public licensee files
  * into the otc_stores Supabase table.
  *
- * Download the Board of Pharmacy file from:
+ * Auto-downloads from the DCA public info Box folder (refreshed monthly):
  * https://www.dca.ca.gov/consumers/public_info/
- * (Board of Pharmacy folder — refreshed monthly)
  *
  * Usage:
- *   npm run import-ca-pharmacy-licenses -- --file path/to/pharmacy.csv
+ *   npm run import-ca-pharmacy-licenses
+ *   npm run import-ca-pharmacy-licenses -- --file path/to/pharmacy.xls
  *
  * Or set CA_DCA_PHARMACY_DATA_URL to a direct download URL.
  */
 import { createClient } from "@supabase/supabase-js";
 import { readFileSync } from "fs";
 import { resolve } from "path";
+import { classifyCaliforniaPharmacyLicense } from "../src/lib/pharmacy-sources/california-pharmacy-classify";
 import { loadEnv, parseDelimited } from "./load-env";
 
 loadEnv();
 
-const FACILITY_LICENSE_PATTERNS = [
-  /^pharmacy$/i,
-  /^pharmacy\s/i,
-  /outpatient pharmacy/i,
-  /community pharmacy/i,
-  /institutional pharmacy/i,
-  /home infusion/i,
-];
-
-const EXCLUDE_LICENSE_PATTERNS = [
-  /pharmacist/i,
-  /technician/i,
-  /intern/i,
-  /designated representative/i,
-  /wholesale/i,
-  /reverse distributor/i,
-  /3pl/i,
-  /veterinary/i,
-];
-
-function isFacilityPharmacyLicense(licenseType: string): boolean {
-  const t = licenseType.trim();
-  if (!t) return false;
-  if (EXCLUDE_LICENSE_PATTERNS.some((p) => p.test(t))) return false;
-  return FACILITY_LICENSE_PATTERNS.some((p) => p.test(t));
-}
+const DCA_BOX_TOKEN_URL = "https://www.dca.ca.gov/boxToken/getToken";
+const DCA_PHARMACY_FILE_ID = "2258208491984";
 
 function pickField(row: Record<string, string>, ...keys: string[]): string {
   for (const key of keys) {
@@ -57,23 +34,35 @@ function pickField(row: Record<string, string>, ...keys: string[]): string {
   return "";
 }
 
+async function downloadDcaPharmacyFile(): Promise<string> {
+  const tokenRes = await fetch(DCA_BOX_TOKEN_URL);
+  if (!tokenRes.ok) {
+    throw new Error(`DCA Box token failed: ${tokenRes.status}`);
+  }
+  const token = (await tokenRes.text()).trim();
+  const fileRes = await fetch(
+    `https://api.box.com/2.0/files/${DCA_PHARMACY_FILE_ID}/content`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  if (!fileRes.ok) throw new Error(`Download failed: ${fileRes.status}`);
+  return fileRes.text();
+}
+
 async function loadLicenseFile(): Promise<string> {
   const fileArg = process.argv.indexOf("--file");
   if (fileArg >= 0 && process.argv[fileArg + 1]) {
-    return readFileSync(resolve(process.argv[fileArg + 1]), "utf-8");
+    return readFileSync(resolve(process.argv[fileArg + 1]), "latin1");
   }
 
   const url = process.env.CA_DCA_PHARMACY_DATA_URL;
-  if (!url) {
-    console.error(
-      "Provide --file path/to/dca_pharmacy.csv or set CA_DCA_PHARMACY_DATA_URL"
-    );
-    process.exit(1);
+  if (url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Download failed: ${res.status}`);
+    return res.text();
   }
 
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Download failed: ${res.status}`);
-  return res.text();
+  console.log("Downloading California Board of Pharmacy data from DCA…");
+  return downloadDcaPharmacyFile();
 }
 
 async function main() {
@@ -106,8 +95,11 @@ async function main() {
     zip: string | null;
     phone: string | null;
     hours: string | null;
+    website: string | null;
     store_type: string;
     source: string;
+    otc_tier: string;
+    license_class: string | null;
     latitude: number;
     longitude: number;
     license_number: string | null;
@@ -117,7 +109,8 @@ async function main() {
   for (const row of rows) {
     const licenseType = pickField(row, "License Type", "License Type Name");
     const status = pickField(row, "License Status", "Status");
-    if (!isFacilityPharmacyLicense(licenseType)) continue;
+    const tier = classifyCaliforniaPharmacyLicense(licenseType);
+    if (!tier || tier === "exclude") continue;
     if (status && !/current|clear|active/i.test(status)) continue;
 
     const org = pickField(row, "ORG/Last Name", "Organization/Last Name");
@@ -149,7 +142,7 @@ async function main() {
       website: null,
       store_type: "pharmacy",
       source: "ca_pharmacy_board",
-      otc_tier: "likely",
+      otc_tier: tier,
       license_class: licenseType || null,
       latitude: coords.lat,
       longitude: coords.lon,
@@ -158,7 +151,11 @@ async function main() {
     });
   }
 
-  console.log(`Parsed ${records.length} licensed California pharmacy facilities`);
+  const likely = records.filter((r) => r.otc_tier === "likely").length;
+  const verify = records.filter((r) => r.otc_tier === "verify").length;
+  console.log(
+    `Parsed ${records.length} licensed California pharmacy facilities (${likely} likely, ${verify} verify)`
+  );
 
   const BATCH = 500;
   for (let i = 0; i < records.length; i += BATCH) {
