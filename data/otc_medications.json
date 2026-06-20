@@ -1270,7 +1270,7 @@
   ],
   "updatedAt": "2026-06-17",
   "sources": {
-    "layer1": "ClinMedFind conventional OTC symptom guide (homeopathic and home remedies excluded)",
+    "layer1": "Route2CareRx conventional OTC symptom guide (homeopathic and home remedies excluded)",
     "layer2": "openFDA NDC Directory (brand/generic products)"
   },
   "stats": {

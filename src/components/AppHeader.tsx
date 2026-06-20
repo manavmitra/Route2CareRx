@@ -22,7 +22,7 @@ export function AppHeader() {
           href="/clinics"
           className="font-bold text-lg text-primary-dark hover:text-primary transition-colors shrink-0"
         >
-          ClinMedFind
+          Route2CareRx
         </Link>
         <div className="flex items-center gap-2 sm:gap-3">
           <nav aria-label={t("nav.main")} className="flex gap-1 sm:gap-2">

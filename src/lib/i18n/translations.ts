@@ -5,7 +5,7 @@ export const LOCALES: { code: Locale; label: string }[] = [
   { code: "es", label: "Español" },
 ];
 
-export const LOCALE_STORAGE_KEY = "clinmedfind-locale";
+export const LOCALE_STORAGE_KEY = "route2carerx-locale";
 
 export type TranslationDict = Record<string, string>;
 
@@ -48,9 +48,9 @@ export const en: TranslationDict = {
   "med.title": "Over-the-counter medication guide",
   "med.subtitle":
     "Conventional OTC medications only — search by symptom for guidance, or find nearby pharmacies and drugstores by ZIP code.",
-  "med.disclaimerLead": "Not medical advice.",
+  "med.disclaimerLead": "Not medical advice and not a prescription.",
   "med.disclaimerBody":
-    "This guide is for education only. Always read the Drug Facts label and ask a pharmacist or clinician if you are pregnant, elderly, take prescriptions, or are treating a child.",
+    "This guide is for education only and does not prescribe medications or replace a prescription from a licensed provider. Always read the Drug Facts label and ask a pharmacist or clinician if you are pregnant, elderly, take prescriptions, or are treating a child.",
   "med.symptomTitle": "Search by symptom",
   "med.symptomDesc":
     "Conventional over-the-counter active ingredients only — no homeopathic products or home remedies.",
@@ -135,7 +135,7 @@ export const en: TranslationDict = {
   "dist.roundMi": "{n} mi",
 
   "footer.data":
-    "Clinic data from HRSA Health Center Service Delivery Sites. OTC active ingredients from openFDA Drug Labels and DailyMed; product listings from openFDA NDC Directory; store locations from CMS NPI Registry. ClinMedFind is not affiliated with HRSA or any healthcare provider.",
+    "Clinic data from HRSA Health Center Service Delivery Sites. OTC active ingredients from openFDA Drug Labels and DailyMed; product listings from openFDA NDC Directory; store locations from CMS NPI Registry. Route2CareRx is not affiliated with HRSA or any healthcare provider.",
   "footer.verify":
     "Verify clinic services and medication information directly with providers and product labels. For emergencies, call 911.",
 
@@ -186,9 +186,9 @@ export const es: TranslationDict = {
   "med.title": "Guía de medicamentos de venta libre",
   "med.subtitle":
     "Solo medicamentos OTC convencionales — busque por síntoma o encuentre farmacias cercanas por código postal.",
-  "med.disclaimerLead": "No es consejo médico.",
+  "med.disclaimerLead": "No es consejo médico ni una receta.",
   "med.disclaimerBody":
-    "Esta guía es solo para educación. Siempre lea la etiqueta de Drug Facts y consulte a un farmacéutico o médico si está embarazada, es mayor, toma recetas o trata a un niño.",
+    "Esta guía es solo para educación y no prescribe medicamentos ni reemplaza una receta de un proveedor autorizado. Siempre lea la etiqueta de Drug Facts y consulte a un farmacéutico o médico si está embarazada, es mayor, toma recetas o trata a un niño.",
   "med.symptomTitle": "Buscar por síntoma",
   "med.symptomDesc":
     "Solo ingredientes activos OTC convencionales — sin productos homeopáticos ni remedios caseros.",
@@ -274,7 +274,7 @@ export const es: TranslationDict = {
   "dist.roundMi": "{n} mi",
 
   "footer.data":
-    "Datos de clínicas de HRSA. Ingredientes OTC de openFDA y DailyMed; productos del Directorio NDC de openFDA; tiendas del Registro NPI de CMS. ClinMedFind no está afiliado con HRSA ni ningún proveedor de salud.",
+    "Datos de clínicas de HRSA. Ingredientes OTC de openFDA y DailyMed; productos del Directorio NDC de openFDA; tiendas del Registro NPI de CMS. Route2CareRx no está afiliado con HRSA ni ningún proveedor de salud.",
   "footer.verify":
     "Verifique servicios e información de medicamentos directamente con proveedores y etiquetas. En emergencias, llame al 911.",
 

@@ -1,4 +1,4 @@
-# ClinMedFind
+# Route2CareRx
 
 Find free and low-cost healthcare clinics across the United States. Enter your ZIP code to discover federally funded community health centers (FQHCs), health center look-alikes, and other low-cost care options near you.
 
@@ -68,4 +68,4 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Disclaimer
 
-ClinMedFind is not affiliated with HRSA or any healthcare provider. Clinic data is provided for informational purposes. Always verify services, hours, and eligibility directly with the clinic. For medical emergencies, call 911.
+Route2CareRx is not affiliated with HRSA or any healthcare provider. Clinic data is provided for informational purposes. Always verify services, hours, and eligibility directly with the clinic. For medical emergencies, call 911.

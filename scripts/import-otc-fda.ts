@@ -290,7 +290,7 @@ async function main() {
         updatedAt: new Date().toISOString().slice(0, 10),
         sources: {
           layer1:
-            "ClinMedFind conventional OTC symptom guide (homeopathic and home remedies excluded)",
+            "Route2CareRx conventional OTC symptom guide (homeopathic and home remedies excluded)",
           layer2: "openFDA NDC Directory (brand/generic products)",
         },
         stats: {

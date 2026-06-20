@@ -42,7 +42,7 @@ export function isHomeopathicOrHomeRemedy(m: OtcMedication): boolean {
   return false;
 }
 
-/** Curated conventional OTC entries from the ClinMedFind symptom guide. */
+/** Curated conventional OTC entries from the Route2CareRx symptom guide. */
 export function isCuratedConventionalOtc(m: OtcMedication): boolean {
   if (isHomeopathicOrHomeRemedy(m)) return false;
 

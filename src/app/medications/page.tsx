@@ -8,7 +8,7 @@ import {
 import { getSymptoms } from "@/lib/otc-data";
 
 export const metadata = {
-  title: "OTC Medication Guide — ClinMedFind",
+  title: "OTC Medication Guide — Route2CareRx",
   description:
     "Search OTC medications by symptom and find nearby pharmacies. Uses, ingredients, side effects, and FDA product listings.",
 };

@@ -9,7 +9,7 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "ClinMedFind — Free Clinics & OTC Medication Guide",
+  title: "Route2CareRx — Free Clinics & OTC Medication Guide",
   description:
     "Find free and low-cost healthcare clinics by ZIP code, and browse over-the-counter medications with uses, ingredients, side effects, and safety information.",
   keywords: [
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     "uninsured healthcare",
   ],
   openGraph: {
-    title: "ClinMedFind — Free Clinics & OTC Medication Guide",
+    title: "Route2CareRx — Free Clinics & OTC Medication Guide",
     description:
       "Find community health centers near your ZIP code and browse OTC medication information in one place.",
     type: "website",
