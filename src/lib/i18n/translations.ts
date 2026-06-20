@@ -20,7 +20,7 @@ export const en: TranslationDict = {
   "clinics.title": "Find free & low-cost clinics near you",
   "clinics.subtitle":
     "Search federally funded community health centers, sliding-fee clinics, and UC Davis student-run clinics — no insurance required.",
-  "clinics.step1": "Enter your ZIP code and search radius.",
+  "clinics.step1": "Search by ZIP code, address, or your current location.",
   "clinics.step2": "Browse nearby clinics with services, hours, and contact info.",
   "clinics.step3": "Call ahead to confirm eligibility and hours.",
   "clinics.howItWorks": "How it works",
@@ -32,7 +32,27 @@ export const en: TranslationDict = {
   "search.radiusMiles": "{n} miles",
   "search.submit": "Find Clinics",
   "search.searching": "Searching…",
-  "search.formLabel": "Search for clinics by ZIP code",
+  "search.formLabel": "Search for clinics by location",
+  "search.modeLabel": "Search by",
+  "search.modeZip": "ZIP code",
+  "search.modeAddress": "Address",
+  "search.modeLocation": "My location",
+  "search.addressLabel": "Street address",
+  "search.addressPlaceholder": "e.g. 123 Main St, Sacramento, CA",
+  "search.addressHint": "Include city and state for best results",
+  "search.addressRequired": "Please enter a street address with city and state.",
+  "search.locationLabel": "Your location",
+  "search.useMyLocation": "Use my location",
+  "search.locating": "Getting location…",
+  "search.locationDetected": "Location ready",
+  "search.locationHint": "Your browser will ask for permission to use GPS",
+  "search.locationRequired": "Please allow location access or choose another search method.",
+  "search.geoDenied": "Location access was denied. Try ZIP code or address instead.",
+  "search.geoUnsupported": "Your browser does not support location services.",
+  "search.filterLabel": "Filter results",
+  "search.filterPlaceholder": "Search by name or address…",
+  "search.filterCount": "Showing {filtered} of {total} results",
+  "search.filterNoMatch": "No results match your filter. Try a different name or address.",
   "search.results": "{count} clinic(s) found",
   "search.within": "Within {radius} miles of {location}",
   "search.noResults": "No clinics found in this radius.",
@@ -47,7 +67,7 @@ export const en: TranslationDict = {
   "med.eyebrow": "Patient education",
   "med.title": "Over-the-counter medication guide",
   "med.subtitle":
-    "Conventional OTC medications only — search by symptom for guidance, or find nearby pharmacies and drugstores by ZIP code.",
+    "Conventional OTC medications only — search by symptom for guidance, or find nearby pharmacies and drugstores by ZIP, address, or your location.",
   "med.disclaimerLead": "Not medical advice and not a prescription.",
   "med.disclaimerBody":
     "This guide is for education only and does not prescribe medications or replace a prescription from a licensed provider. Always read the Drug Facts label and ask a pharmacist or clinician if you are pregnant, elderly, take prescriptions, or are treating a child.",
@@ -57,7 +77,7 @@ export const en: TranslationDict = {
     "Conventional over-the-counter active ingredients only — no homeopathic products or home remedies.",
   "med.storesTitle": "Find stores near you",
   "med.storesDesc":
-    "Enter your ZIP code to find nearby pharmacies and drugstores where you can buy OTC medications.",
+    "Search by ZIP code, address, or your location to find nearby pharmacies and drugstores where you can buy OTC medications.",
 
   "otc.symptomLabel": "What symptom do you have?",
   "otc.symptomPlaceholder": "Select a symptom…",
@@ -75,26 +95,31 @@ export const en: TranslationDict = {
 
   "store.find": "Find Stores",
   "store.searching": "Searching…",
-  "store.formLabel": "Search for pharmacies and drugstores by ZIP code",
+  "store.formLabel": "Search for pharmacies and drugstores by location",
   "store.found": "{count} store(s) found",
   "store.within": "Pharmacies & drugstores within {radius} miles of {location}",
   "store.noResults": "No pharmacies found in this radius.",
   "store.noResultsHint":
-    "Try expanding your radius. Grocery stores, Walmart, and Target also sell OTC medications even if not listed here.",
+    "Try expanding your radius or search a nearby ZIP code.",
   "store.source":
-    "Results combine NPPES (NPI Registry), OpenStreetMap, HRSA health centers, and Google Places when configured. Duplicates are merged by location. Call ahead to confirm hours.",
+    "Results combine NPPES (NPI Registry), OpenStreetMap, Geofabrik California OSM and CA Board of Pharmacy data (when imported), and Google Places when configured. Only traditional retail pharmacies and drugstores are shown. Duplicates are merged by location. Call ahead to confirm hours.",
   "store.sourcesLabel": "Sources in this search: {sources}",
   "store.moreResources": "More pharmacy & clinic directories",
   "store.moreResourcesDesc":
     "National directories for charitable clinics, health center pharmacies, and comprehensive pharmacy listings.",
   "store.call": "Call {phone}",
   "store.type.pharmacy": "Retail pharmacy",
-  "store.type.drugstore": "Pharmacy",
-  "store.type.clinic_pharmacy": "Clinic / health center pharmacy",
+  "store.type.drugstore": "Pharmacy / drugstore",
   "store.source.nppes": "NPPES (NPI Registry)",
-  "store.source.openstreetmap": "OpenStreetMap",
+  "store.source.openstreetmap": "OpenStreetMap (live)",
+  "store.source.geofabrik_osm": "Geofabrik California OSM",
+  "store.source.ca_pharmacy_board": "CA Board of Pharmacy",
+  "store.source.tx_pharmacy_board": "Texas TSBP (CSV)",
   "store.source.hrsa_clinic": "HRSA health center",
   "store.source.google_places": "Google Places",
+  "store.tierVerify": "Verify OTC availability",
+  "store.locationsNote":
+    "Pharmacy locations come from official state licensing records and trusted public databases. Availability may vary, so call ahead to confirm.",
 
   "resources.eyebrow": "More ways to get care",
   "resources.title": "Additional resources",
@@ -157,6 +182,11 @@ export const en: TranslationDict = {
   "errors.generic": "Something went wrong. Please try again.",
   "errors.zipNotFound":
     "ZIP code not found. Please enter a valid US ZIP code (including territories).",
+  "errors.addressNotFound":
+    "Address not found. Try a street address with city and state, or use ZIP code.",
+  "errors.locationRequired":
+    "Please enter a ZIP code, address, or use your location.",
+  "errors.invalidLocation": "Invalid location coordinates.",
 };
 
 export const es: TranslationDict = {
@@ -170,7 +200,7 @@ export const es: TranslationDict = {
   "clinics.title": "Encuentre clínicas gratuitas y de bajo costo cerca de usted",
   "clinics.subtitle":
     "Busque centros comunitarios de salud financiados federalmente, clínicas con tarifas escalonadas y clínicas estudiantiles de UC Davis — no se requiere seguro.",
-  "clinics.step1": "Ingrese su código postal y radio de búsqueda.",
+  "clinics.step1": "Busque por código postal, dirección o su ubicación actual.",
   "clinics.step2":
     "Explore clínicas cercanas con servicios, horarios e información de contacto.",
   "clinics.step3": "Llame con anticipación para confirmar elegibilidad y horarios.",
@@ -183,7 +213,27 @@ export const es: TranslationDict = {
   "search.radiusMiles": "{n} millas",
   "search.submit": "Buscar clínicas",
   "search.searching": "Buscando…",
-  "search.formLabel": "Buscar clínicas por código postal",
+  "search.formLabel": "Buscar clínicas por ubicación",
+  "search.modeLabel": "Buscar por",
+  "search.modeZip": "Código postal",
+  "search.modeAddress": "Dirección",
+  "search.modeLocation": "Mi ubicación",
+  "search.addressLabel": "Dirección",
+  "search.addressPlaceholder": "ej. 123 Main St, Sacramento, CA",
+  "search.addressHint": "Incluya ciudad y estado para mejores resultados",
+  "search.addressRequired": "Ingrese una dirección con ciudad y estado.",
+  "search.locationLabel": "Su ubicación",
+  "search.useMyLocation": "Usar mi ubicación",
+  "search.locating": "Obteniendo ubicación…",
+  "search.locationDetected": "Ubicación lista",
+  "search.locationHint": "Su navegador pedirá permiso para usar GPS",
+  "search.locationRequired": "Permita el acceso a la ubicación o elija otro método de búsqueda.",
+  "search.geoDenied": "Acceso a ubicación denegado. Pruebe código postal o dirección.",
+  "search.geoUnsupported": "Su navegador no admite servicios de ubicación.",
+  "search.filterLabel": "Filtrar resultados",
+  "search.filterPlaceholder": "Buscar por nombre o dirección…",
+  "search.filterCount": "Mostrando {filtered} de {total} resultados",
+  "search.filterNoMatch": "Ningún resultado coincide con su filtro. Pruebe otro nombre o dirección.",
   "search.results": "{count} clínica(s) encontrada(s)",
   "search.within": "Dentro de {radius} millas de {location}",
   "search.noResults": "No se encontraron clínicas en este radio.",
@@ -198,7 +248,7 @@ export const es: TranslationDict = {
   "med.eyebrow": "Educación para pacientes",
   "med.title": "Guía de medicamentos de venta libre",
   "med.subtitle":
-    "Solo medicamentos OTC convencionales — busque por síntoma o encuentre farmacias cercanas por código postal.",
+    "Solo medicamentos OTC convencionales — busque por síntoma o encuentre farmacias cercanas por código postal, dirección o ubicación.",
   "med.disclaimerLead": "No es consejo médico ni una receta.",
   "med.disclaimerBody":
     "Esta guía es solo para educación y no prescribe medicamentos ni reemplaza una receta de un proveedor autorizado. Siempre lea la etiqueta de Drug Facts y consulte a un farmacéutico o médico si está embarazada, es mayor, toma recetas o trata a un niño.",
@@ -208,7 +258,7 @@ export const es: TranslationDict = {
     "Solo ingredientes activos OTC convencionales — sin productos homeopáticos ni remedios caseros.",
   "med.storesTitle": "Encontrar tiendas cerca de usted",
   "med.storesDesc":
-    "Ingrese su código postal para encontrar farmacias y droguerías cercanas donde comprar medicamentos OTC.",
+    "Busque por código postal, dirección o ubicación para encontrar farmacias y droguerías cercanas donde comprar medicamentos OTC.",
 
   "otc.symptomLabel": "¿Qué síntoma tiene?",
   "otc.symptomPlaceholder": "Seleccione un síntoma…",
@@ -226,26 +276,31 @@ export const es: TranslationDict = {
 
   "store.find": "Buscar tiendas",
   "store.searching": "Buscando…",
-  "store.formLabel": "Buscar farmacias y droguerías por código postal",
+  "store.formLabel": "Buscar farmacias y droguerías por ubicación",
   "store.found": "{count} tienda(s) encontrada(s)",
   "store.within": "Farmacias y droguerías dentro de {radius} millas de {location}",
   "store.noResults": "No se encontraron farmacias en este radio.",
   "store.noResultsHint":
-    "Intente ampliar el radio. Supermercados, Walmart y Target también venden medicamentos OTC.",
+    "Intente ampliar el radio o buscar en un código postal cercano.",
   "store.source":
-    "Resultados combinados de NPPES (Registro NPI), OpenStreetMap, centros HRSA y Google Places si está configurado. Los duplicados se fusionan por ubicación. Llame para confirmar horarios.",
+    "Resultados combinados de NPPES (Registro NPI), OpenStreetMap, Geofabrik California OSM y Junta de Farmacia de CA (si importados), y Google Places si está configurado. Solo se muestran farmacias retail y droguerías tradicionales. Los duplicados se fusionan por ubicación. Llame para confirmar horarios.",
   "store.sourcesLabel": "Fuentes en esta búsqueda: {sources}",
   "store.moreResources": "Más directorios de farmacias y clínicas",
   "store.moreResourcesDesc":
     "Directorios nacionales para clínicas benéficas, farmacias de centros de salud y listados completos de farmacias.",
   "store.call": "Llamar {phone}",
   "store.type.pharmacy": "Farmacia retail",
-  "store.type.drugstore": "Farmacia",
-  "store.type.clinic_pharmacy": "Farmacia de clínica / centro de salud",
+  "store.type.drugstore": "Farmacia / droguería",
   "store.source.nppes": "NPPES (Registro NPI de CMS)",
-  "store.source.openstreetmap": "OpenStreetMap",
+  "store.source.openstreetmap": "OpenStreetMap (en vivo)",
+  "store.source.geofabrik_osm": "Geofabrik California OSM",
+  "store.source.ca_pharmacy_board": "Junta de Farmacia de CA",
+  "store.source.tx_pharmacy_board": "TSBP Texas (CSV)",
   "store.source.hrsa_clinic": "Centro de salud HRSA",
   "store.source.google_places": "Google Places",
+  "store.tierVerify": "Verificar disponibilidad OTC",
+  "store.locationsNote":
+    "Las ubicaciones provienen de registros oficiales de licencias estatales y bases de datos públicas confiables. La disponibilidad puede variar; llame con anticipación para confirmar.",
 
   "resources.eyebrow": "Más formas de obtener atención",
   "resources.title": "Recursos adicionales",
@@ -309,6 +364,11 @@ export const es: TranslationDict = {
   "errors.generic": "Algo salió mal. Intente de nuevo.",
   "errors.zipNotFound":
     "Código postal no encontrado. Ingrese un código postal válido de EE. UU. (incluidos territorios).",
+  "errors.addressNotFound":
+    "Dirección no encontrada. Pruebe una dirección con ciudad y estado, o use código postal.",
+  "errors.locationRequired":
+    "Ingrese un código postal, dirección o use su ubicación.",
+  "errors.invalidLocation": "Coordenadas de ubicación no válidas.",
 };
 
 export const symptomLabelsEs: Record<string, string> = {
@@ -390,6 +450,12 @@ export function translateApiError(locale: Locale, message: string): string {
       "errors.zipNotFound",
     "Unable to search stores right now. Please try again.": "errors.generic",
     "Unable to search stores. Please try again.": "errors.generic",
+    "Please enter a ZIP code, address, or use your location.":
+      "errors.locationRequired",
+    "Address not found. Try a street address with city and state, or use ZIP code.":
+      "errors.addressNotFound",
+    "Invalid location coordinates.": "errors.invalidLocation",
+    "Address must be within the United States.": "errors.addressNotFound",
   };
   const key = map[message];
   return key ? translate(locale, key) : message;

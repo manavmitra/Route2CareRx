@@ -58,6 +58,17 @@ npm run import-zips
 npm run import-data
 ```
 
+**California OTC store database** (optional — enriches pharmacy search in CA):
+
+```bash
+# Apply OTC store table (required before CA/TX imports)
+npm run db:migrate-otc
+
+npm run import-ca-osm                              # Geofabrik/OSM bulk California stores
+npm run import-ca-pharmacy-licenses -- --file path/to/dca_pharmacy.csv
+npm run import-tx-pharmacy-licenses                # Texas TSBP phydsk.csv (auto-download)
+```
+
 ### 4. Run the app
 
 ```bash
@@ -79,6 +90,17 @@ Open [http://localhost:3000](http://localhost:3000).
 | [HRSA ArcGIS Primary Health Care Facilities](https://gisportal.hrsa.gov/server/rest/services/HealthCareFacilities/PrimaryHealthCareFacilities_FS/MapServer/0/) | Same sites, machine-readable | `TOT_OPER_HR_PER_WEEK`, schedule & calendar |
 | [FreeClinics.com](https://www.freeclinics.com/) | Free/income-based clinics | Sometimes daily hours (external link) |
 | NAFC, CDC, SAMHSA | Specialized care locators | Search-only |
+
+### OTC store sources (medications page)
+
+| Source | Role |
+|--------|------|
+| [Texas TSBP phydsk.csv](https://www.pharmacy.texas.gov/downloads/phydsk.csv) | Main TX licensed pharmacy database (`npm run import-tx-pharmacy-licenses`) |
+| [Geofabrik California OSM](https://download.geofabrik.de/north-america/us/california.html) | Bulk CA retail pharmacies and drugstores (`npm run import-ca-osm`) |
+| [CA Board of Pharmacy / DCA](https://www.pharmacy.ca.gov/about/verify_lic.shtml) | Licensed CA pharmacy verification (`npm run import-ca-pharmacy-licenses`) |
+| [NPPES NPI Registry](https://npiregistry.cms.hhs.gov/) | Live national pharmacy NPI lookup |
+| [NCPDP dataQ](https://www.ncpdp.org/Products/Pharmacy-Database) | Paid comprehensive directory (external link) |
+| Google Places | Optional hours/GPS enrichment via `GOOGLE_MAPS_API_KEY` |
 
 ## Tech Stack
 

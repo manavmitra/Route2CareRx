@@ -46,6 +46,16 @@ export function OtcStoreCard({ store }: OtcStoreCardProps) {
         <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 text-xs font-medium">
           {t(sourceKey(store.source))}
         </span>
+        {store.otc_tier === "verify" && (
+          <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-amber-50 text-amber-900 text-xs font-medium">
+            {t("store.tierVerify")}
+          </span>
+        )}
+        {store.license_class && (
+          <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-slate-50 text-slate-600 text-xs font-medium">
+            {store.license_class}
+          </span>
+        )}
       </div>
 
       {(store.address || store.city) && (
@@ -70,6 +80,16 @@ export function OtcStoreCard({ store }: OtcStoreCardProps) {
             className="inline-flex items-center px-4 py-2 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark transition-colors"
           >
             {t("store.call", { phone })}
+          </a>
+        )}
+        {store.website && (
+          <a
+            href={store.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center px-4 py-2 rounded-xl border border-border text-sm font-medium hover:bg-slate-50 transition-colors"
+          >
+            {t("card.website")}
           </a>
         )}
         <a

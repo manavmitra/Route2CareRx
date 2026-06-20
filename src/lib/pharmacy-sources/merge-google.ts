@@ -3,6 +3,7 @@ import { haversineMiles, formatPhone } from "@/lib/utils";
 import {
   parseGooglePlace,
   formatGoogleHours,
+  parseAddressComponents,
   type GooglePlaceResult,
 } from "./google-places";
 
@@ -59,6 +60,7 @@ function enrichFromGoogle(
   const lat = place.location?.latitude;
   const lon = place.location?.longitude;
   const hours = formatGoogleHours(place.regularOpeningHours);
+  const parsedAddr = parseAddressComponents(place.addressComponents);
 
   const nextLat = lat ?? store.latitude;
   const nextLon = lon ?? store.longitude;
@@ -67,12 +69,21 @@ function enrichFromGoogle(
     ...store,
     latitude: nextLat,
     longitude: nextLon,
+    address:
+      store.address ??
+      place.shortFormattedAddress ??
+      place.formattedAddress?.split(",")[0] ??
+      null,
+    city: store.city ?? parsedAddr.city,
+    state: store.state ?? parsedAddr.state,
+    zip: store.zip ?? parsedAddr.zip,
     phone:
       store.phone ??
       (place.nationalPhoneNumber
         ? formatPhone(place.nationalPhoneNumber)
         : null),
     hours: hours ?? store.hours,
+    website: store.website ?? place.websiteUri ?? null,
     distance_miles: haversineMiles(originLat, originLon, nextLat, nextLon),
   };
 }

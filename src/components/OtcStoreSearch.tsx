@@ -1,40 +1,44 @@
 "use client";
 
-import { useState, useCallback, FormEvent } from "react";
+import { useState, useCallback, useMemo } from "react";
 import type { PharmacySearchResponse } from "@/lib/pharmacy-types";
+import { matchesNameOrAddress } from "@/lib/filter-by-query";
 import { useLanguage } from "@/lib/i18n/context";
 import { OtcStoreCard } from "./OtcStoreCard";
 import { PharmacyResourceLinks } from "./PharmacyResourceLinks";
+import {
+  LocationSearchForm,
+  buildLocationSearchParams,
+  type LocationSearchParams,
+} from "./LocationSearchForm";
+import { ResultsFilterBar } from "./ResultsFilterBar";
 
 const RADIUS_OPTIONS = [5, 10, 15, 25];
 
 export function OtcStoreSearch() {
-  const { t, translateError } = useLanguage();
-  const [zip, setZip] = useState("");
-  const [radius, setRadius] = useState(10);
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [results, setResults] = useState<PharmacySearchResponse | null>(null);
+  const [filterQuery, setFilterQuery] = useState("");
 
   const search = useCallback(
-    async (searchZip: string, searchRadius: number) => {
+    async (params: LocationSearchParams) => {
       setLoading(true);
       setError(null);
+      setFilterQuery("");
 
       try {
-        const params = new URLSearchParams({
-          zip: searchZip,
-          radius: String(searchRadius),
-        });
-      const res = await fetch(`/api/pharmacies/search?${params}`);
-      let data: PharmacySearchResponse & { error?: string };
-      try {
-        data = await res.json();
-      } catch {
-        setResults(null);
-        setError(t("errors.generic"));
-        return;
-      }
+        const query = buildLocationSearchParams(params);
+        const res = await fetch(`/api/pharmacies/search?${query}`);
+        let data: PharmacySearchResponse & { error?: string };
+        try {
+          data = await res.json();
+        } catch {
+          setResults(null);
+          setError(t("errors.generic"));
+          return;
+        }
 
         if (!res.ok) {
           setResults(null);
@@ -53,94 +57,63 @@ export function OtcStoreSearch() {
     [t]
   );
 
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    const cleaned = zip.replace(/\D/g, "").slice(0, 5);
-    if (cleaned.length !== 5) {
-      setError(t("errors.invalidZip"));
-      return;
-    }
-    search(cleaned, radius);
-  }
+  const filteredStores = useMemo(() => {
+    if (!results) return [];
+    return results.stores.filter((store) =>
+      matchesNameOrAddress(filterQuery, [
+        store.name,
+        store.brand,
+        store.address,
+        store.city,
+        store.state,
+        store.zip,
+      ])
+    );
+  }, [results, filterQuery]);
+
+  const locationLabel =
+    results?.search_label ??
+    (results?.city && results?.state
+      ? `${results.city}, ${results.state}${results.zip ? ` ${results.zip}` : ""}`
+      : results?.zip ?? "");
 
   return (
     <div className="space-y-6">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-card rounded-2xl shadow-lg border border-border p-6 md:p-8"
-        aria-label={t("store.formLabel")}
-      >
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
-            <label htmlFor="store-zip" className="block text-sm font-medium mb-2">
-              {t("search.zipLabel")}
-            </label>
-            <input
-              id="store-zip"
-              type="text"
-              inputMode="numeric"
-              pattern="[0-9]{5}"
-              maxLength={5}
-              placeholder={t("search.zipPlaceholder")}
-              value={zip}
-              onChange={(e) => {
-                setZip(e.target.value.replace(/\D/g, "").slice(0, 5));
-                setError(null);
-              }}
-              className="w-full px-4 py-3 rounded-xl border border-border bg-background text-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-              required
-            />
-          </div>
+      <p className="text-sm text-muted">{t("store.locationsNote")}</p>
 
-          <div className="sm:w-40">
-            <label htmlFor="store-radius" className="block text-sm font-medium mb-2">
-              {t("search.radiusLabel")}
-            </label>
-            <select
-              id="store-radius"
-              value={radius}
-              onChange={(e) => setRadius(Number(e.target.value))}
-              className="w-full px-4 py-3 rounded-xl border border-border bg-background text-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-            >
-              {RADIUS_OPTIONS.map((r) => (
-                <option key={r} value={r}>
-                  {t("search.radiusMiles", { n: r })}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="sm:self-end">
-            <button
-              type="submit"
-              disabled={loading || zip.length < 5}
-              className="w-full sm:w-auto px-8 py-3 rounded-xl bg-violet-700 hover:bg-violet-800 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold text-lg transition-colors cursor-pointer"
-            >
-              {loading ? t("store.searching") : t("store.find")}
-            </button>
-          </div>
-        </div>
-
-        {error && (
-          <div
-            role="alert"
-            className="mt-4 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-sm"
-          >
-            {translateError(error)}
-          </div>
-        )}
-      </form>
+      <LocationSearchForm
+        idPrefix="store"
+        radiusOptions={RADIUS_OPTIONS}
+        defaultRadius={10}
+        formLabel={t("store.formLabel")}
+        submitLabel={t("store.find")}
+        searchingLabel={t("store.searching")}
+        accentClass="bg-violet-700 hover:bg-violet-800"
+        onSearch={search}
+        loading={loading}
+        error={error}
+      />
 
       {results && (
         <div className="space-y-6">
+          <ResultsFilterBar
+            id="store-filter"
+            value={filterQuery}
+            onChange={setFilterQuery}
+            filteredCount={filteredStores.length}
+            totalCount={results.total}
+          />
+
           <div>
             <h3 className="text-xl font-bold">
-              {t("store.found", { count: results.total })}
+              {t("store.found", {
+                count: filterQuery.trim() ? filteredStores.length : results.total,
+              })}
             </h3>
             <p className="text-muted mt-1 text-sm">
               {t("store.within", {
                 radius: results.radius_miles,
-                location: `${results.city ? `${results.city}, ${results.state} ` : ""}${results.zip}`,
+                location: locationLabel,
               })}
             </p>
             {results.disclaimer && (
@@ -158,9 +131,13 @@ export function OtcStoreSearch() {
               <p className="text-amber-900 font-medium">{t("store.noResults")}</p>
               <p className="text-amber-800 text-sm mt-2">{t("store.noResultsHint")}</p>
             </div>
+          ) : filteredStores.length === 0 ? (
+            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-center">
+              <p className="text-amber-900 font-medium">{t("search.filterNoMatch")}</p>
+            </div>
           ) : (
             <ul className="space-y-4" aria-label="Pharmacy results">
-              {results.stores.map((store) => (
+              {filteredStores.map((store) => (
                 <li key={store.id}>
                   <OtcStoreCard store={store} />
                 </li>

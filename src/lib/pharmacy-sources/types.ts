@@ -14,7 +14,10 @@ export type PharmacyFetcher = (
 
 export function dedupeStores(stores: OtcStore[]): OtcStore[] {
   const sourcePriority: Record<OtcStore["source"], number> = {
-    google_places: 4,
+    google_places: 6,
+    tx_pharmacy_board: 5,
+    ca_pharmacy_board: 5,
+    geofabrik_osm: 4,
     openstreetmap: 3,
     nppes: 2,
     hrsa_clinic: 1,
@@ -29,14 +32,31 @@ export function dedupeStores(stores: OtcStore[]): OtcStore[] {
       byKey.set(key, store);
       continue;
     }
-    const keep =
+    const preferred =
       sourcePriority[store.source] > sourcePriority[existing.source]
         ? store
         : existing;
-    byKey.set(key, keep);
+    const other = preferred === store ? existing : store;
+    byKey.set(key, mergeStoreFields(preferred, other));
   }
 
   return Array.from(byKey.values());
+}
+
+function mergeStoreFields(primary: OtcStore, secondary: OtcStore): OtcStore {
+  return {
+    ...primary,
+    address: primary.address ?? secondary.address,
+    city: primary.city ?? secondary.city,
+    state: primary.state ?? secondary.state,
+    zip: primary.zip ?? secondary.zip,
+    phone: primary.phone ?? secondary.phone,
+    hours: primary.hours ?? secondary.hours,
+    website: primary.website ?? secondary.website,
+    brand: primary.brand ?? secondary.brand,
+    otc_tier: primary.otc_tier ?? secondary.otc_tier,
+    license_class: primary.license_class ?? secondary.license_class,
+  };
 }
 
 function storeDedupeKey(store: OtcStore): string {

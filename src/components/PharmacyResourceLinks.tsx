@@ -7,6 +7,26 @@ const PHARMACY_RESOURCE_LABELS_ES: Record<
   string,
   { description: string; category: string }
 > = {
+  "Texas TSBP Pharmacy Lists (CSV)": {
+    category: "Datos de farmacias en Texas",
+    description:
+      "CSV oficial actualizado diariamente con instalaciones farmacéuticas licenciadas en Texas",
+  },
+  "Geofabrik California OSM": {
+    category: "Datos de tiendas en California",
+    description:
+      "Extracto gratuito de OpenStreetMap — farmacias, supermercados, tiendas de conveniencia y droguerías",
+  },
+  "CA Board of Pharmacy — Verify a License": {
+    category: "Verificación de farmacias en California",
+    description:
+      "Búsqueda oficial de licencias de farmacia de California y archivos públicos del DCA",
+  },
+  "NPPES NPI Registry": {
+    category: "Proveedores farmacéuticos nacionales",
+    description:
+      "Registro nacional de proveedores CMS — organizaciones farmacéuticas e información de contacto",
+  },
   "HRSA Find a Health Center": {
     category: "Centros comunitarios de salud",
     description:

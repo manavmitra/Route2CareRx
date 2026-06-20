@@ -4,15 +4,13 @@ import type { PharmacyFetchContext } from "./types";
 
 const NPI_URL = "https://npiregistry.cms.hhs.gov/api/";
 
-/** NPI taxonomy descriptions that capture retail, clinic, and mail-order pharmacies. */
+/** NPI taxonomy descriptions for traditional retail pharmacies only. */
 const NPI_TAXONOMY_DESCRIPTIONS = [
   "Pharmacy",
   "Community/Retail Pharmacy",
-  "Clinic Pharmacy",
-  "Mail Order Pharmacy",
-  "Institutional Pharmacy",
-  "Compounding Pharmacy",
 ] as const;
+
+const NON_RETAIL_TAXONOMY = /clinic|mail order|institutional|compounding/i;
 
 interface NpiAddress {
   address_1: string;
@@ -72,15 +70,16 @@ function parseNpiPharmacy(
 
   if (!name) return null;
 
-  const zip5 = loc.postal_code.replace(/\D/g, "").slice(0, 5);
-  const coords = zipCoords.get(zip5);
+  const zip5 = (loc.postal_code ?? "").replace(/\D/g, "").slice(0, 5);
+  const coords = zip5 ? zipCoords.get(zip5) : null;
   const lat = coords?.lat ?? originLat;
   const lon = coords?.lon ?? originLon;
 
   const taxonomyDesc = result.taxonomies.find((t) => t.primary)?.desc ?? "";
-  let storeType: OtcStore["store_type"] = "drugstore";
-  if (taxonomyDesc.includes("Clinic")) storeType = "clinic_pharmacy";
-  else if (
+  if (NON_RETAIL_TAXONOMY.test(taxonomyDesc)) return null;
+
+  let storeType: OtcStore["store_type"] = "pharmacy";
+  if (
     taxonomyDesc.includes("Community/Retail") ||
     taxonomyDesc === "Pharmacy"
   ) {
@@ -94,11 +93,13 @@ function parseNpiPharmacy(
     address: loc.address_1,
     city: loc.city,
     state: loc.state,
-    zip: zip5,
+    zip: zip5 || null,
     phone: loc.telephone_number ? formatPhone(loc.telephone_number) : null,
     hours: null,
+    website: null,
     store_type: storeType,
     source: "nppes",
+    otc_tier: "likely",
     latitude: lat,
     longitude: lon,
     distance_miles: haversineMiles(originLat, originLon, lat, lon),

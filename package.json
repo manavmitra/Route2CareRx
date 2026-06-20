@@ -13,6 +13,10 @@
     "import-data": "tsx scripts/import-clinics.ts",
     "import-zips": "tsx scripts/import-zip-codes.ts",
     "import-otc": "tsx scripts/import-otc-fda.ts",
+    "import-ca-osm": "tsx scripts/import-ca-geofabrik-osm.ts",
+    "import-ca-pharmacy-licenses": "tsx scripts/import-ca-pharmacy-licenses.ts",
+    "import-tx-pharmacy-licenses": "tsx scripts/import-tx-pharmacy-licenses.ts",
+    "db:migrate-otc": "tsx scripts/apply-otc-stores-migration.ts",
     "import-uc-davis": "tsx scripts/import-uc-davis-clinics.ts"
   },
   "dependencies": {
@@ -25,10 +29,12 @@
     "@eslint/eslintrc": "^3.3.5",
     "@tailwindcss/postcss": "^4.1.8",
     "@types/node": "^22.15.21",
+    "@types/pg": "^8.20.0",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",
     "eslint": "^9.27.0",
     "eslint-config-next": "^15.3.3",
+    "pg": "^8.22.0",
     "tailwindcss": "^4.1.8",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"

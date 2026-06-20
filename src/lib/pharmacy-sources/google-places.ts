@@ -13,13 +13,14 @@ export interface GooglePlaceResult {
   location?: { latitude: number; longitude: number };
   regularOpeningHours?: { weekdayDescriptions?: string[] };
   addressComponents?: Array<{ types: string[]; shortText: string }>;
+  websiteUri?: string;
 }
 
 function getApiKey(): string | null {
   return process.env.GOOGLE_MAPS_API_KEY ?? process.env.GOOGLE_PLACES_API_KEY ?? null;
 }
 
-function parseAddressComponents(
+export function parseAddressComponents(
   components?: GooglePlaceResult["addressComponents"]
 ): { city: string | null; state: string | null; zip: string | null } {
   if (!components) return { city: null, state: null, zip: null };
@@ -68,8 +69,10 @@ export function parseGooglePlace(
       ? formatPhone(place.nationalPhoneNumber)
       : null,
     hours: formatGoogleHours(place.regularOpeningHours),
+    website: place.websiteUri ?? null,
     store_type: "pharmacy",
     source: "google_places",
+    otc_tier: "likely",
     latitude: lat,
     longitude: lon,
     distance_miles: haversineMiles(originLat, originLon, lat, lon),
@@ -94,7 +97,7 @@ export async function fetchGooglePlacesPharmacies(
         "Content-Type": "application/json",
         "X-Goog-Api-Key": apiKey,
         "X-Goog-FieldMask":
-          "places.id,places.displayName,places.formattedAddress,places.shortFormattedAddress,places.location,places.nationalPhoneNumber,places.regularOpeningHours,places.addressComponents",
+          "places.id,places.displayName,places.formattedAddress,places.shortFormattedAddress,places.location,places.nationalPhoneNumber,places.regularOpeningHours,places.addressComponents,places.websiteUri",
       },
       body: JSON.stringify({
         includedTypes: ["pharmacy"],

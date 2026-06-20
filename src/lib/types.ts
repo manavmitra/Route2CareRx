@@ -35,9 +35,10 @@ export interface Clinic {
 }
 
 export interface SearchResponse {
-  zip: string;
+  zip: string | null;
   city: string | null;
   state: string | null;
+  search_label: string;
   radius_miles: number;
   total: number;
   clinics: Clinic[];
