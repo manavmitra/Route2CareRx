@@ -42,6 +42,13 @@ git config core.hooksPath .githooks
 
 Vercel redeploys automatically whenever GitHub receives a push to `main`.
 
+To add GitHub Actions CI (optional), authorize workflow scope then push `.github/workflows/ci.yml`:
+
+```bash
+gh auth refresh -h github.com -s workflow
+git add .github/workflows/ci.yml && git commit -m "Add CI workflow" && git push
+```
+
 ### 3. Set up the database
 
 Apply the Supabase migration (via Supabase dashboard SQL editor or MCP), then import data:
