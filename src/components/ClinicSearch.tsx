@@ -26,7 +26,7 @@ export function ClinicSearch() {
     async (params: LocationSearchParams) => {
       setLoading(true);
       setError(null);
-      setFilterQuery("");
+      setFilterQuery(params.name?.trim() ?? "");
 
       try {
         const query = buildLocationSearchParams(params);
@@ -86,6 +86,7 @@ export function ClinicSearch() {
         formLabel={t("search.formLabel")}
         submitLabel={t("search.submit")}
         searchingLabel={t("search.searching")}
+        addressOrNamePlaceholder={t("search.clinicAddressOrNamePlaceholder")}
         onSearch={search}
         loading={loading}
         error={error}

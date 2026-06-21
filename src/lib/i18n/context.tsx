@@ -20,6 +20,7 @@ import {
 type LanguageContextValue = {
   locale: Locale;
   setLocale: (locale: Locale) => void;
+  mounted: boolean;
   t: (key: string, vars?: Record<string, string | number>) => string;
   translateError: (message: string) => string;
   symptomLabel: (symptom: string) => string;
@@ -29,7 +30,7 @@ const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("en");
-  const [ready, setReady] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     try {
@@ -40,18 +41,18 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     } catch {
       // localStorage may be unavailable (private browsing, blocked storage)
     }
-    setReady(true);
+    setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!ready) return;
+    if (!mounted) return;
     document.documentElement.lang = locale;
     try {
       localStorage.setItem(LOCALE_STORAGE_KEY, locale);
     } catch {
       // ignore storage failures
     }
-  }, [locale, ready]);
+  }, [locale, mounted]);
 
   const setLocale = useCallback((next: Locale) => {
     setLocaleState(next);
@@ -61,11 +62,12 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     () => ({
       locale,
       setLocale,
+      mounted,
       t: (key, vars) => translate(locale, key, vars),
       translateError: (message) => translateApiError(locale, message),
       symptomLabel: (symptom) => symptomLabel(locale, symptom),
     }),
-    [locale, setLocale]
+    [locale, setLocale, mounted]
   );
 
   return (

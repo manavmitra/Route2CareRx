@@ -4,7 +4,22 @@ import { LOCALES } from "@/lib/i18n/translations";
 import { useLanguage } from "@/lib/i18n/context";
 
 export function LanguageSwitcher() {
-  const { locale, setLocale, t } = useLanguage();
+  const { locale, setLocale, t, mounted } = useLanguage();
+
+  if (!mounted) {
+    return (
+      <div className="flex items-center gap-1 shrink-0" aria-hidden>
+        {LOCALES.map(({ code }) => (
+          <span
+            key={code}
+            className="px-2 py-1 rounded-md text-xs font-semibold invisible"
+          >
+            {code.toUpperCase()}
+          </span>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div

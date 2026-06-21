@@ -35,12 +35,17 @@ export const en: TranslationDict = {
   "search.formLabel": "Search for clinics by location",
   "search.modeLabel": "Search by",
   "search.modeZip": "ZIP code",
-  "search.modeAddress": "Address",
+  "search.modeAddress": "Address or name",
   "search.modeLocation": "My location",
-  "search.addressLabel": "Street address",
-  "search.addressPlaceholder": "e.g. 123 Main St, Sacramento, CA",
-  "search.addressHint": "Include city and state for best results",
-  "search.addressRequired": "Please enter a street address with city and state.",
+  "search.addressOrNameLabel": "Address or name",
+  "search.clinicAddressOrNamePlaceholder":
+    "e.g. 123 Main St, Sacramento, CA or Kaiser",
+  "search.pharmacyAddressOrNamePlaceholder":
+    "e.g. 123 Main St, Sacramento, CA or CVS",
+  "search.addressHint":
+    "Enter a street address with city and state, or a clinic/pharmacy name with city",
+  "search.addressOrNameRequired":
+    "Please enter an address or clinic/pharmacy name.",
   "search.locationLabel": "Your location",
   "search.useMyLocation": "Use my location",
   "search.locating": "Getting location…",
@@ -216,12 +221,17 @@ export const es: TranslationDict = {
   "search.formLabel": "Buscar clínicas por ubicación",
   "search.modeLabel": "Buscar por",
   "search.modeZip": "Código postal",
-  "search.modeAddress": "Dirección",
+  "search.modeAddress": "Dirección o nombre",
   "search.modeLocation": "Mi ubicación",
-  "search.addressLabel": "Dirección",
-  "search.addressPlaceholder": "ej. 123 Main St, Sacramento, CA",
-  "search.addressHint": "Incluya ciudad y estado para mejores resultados",
-  "search.addressRequired": "Ingrese una dirección con ciudad y estado.",
+  "search.addressOrNameLabel": "Dirección o nombre",
+  "search.clinicAddressOrNamePlaceholder":
+    "ej. 123 Main St, Sacramento, CA o Kaiser",
+  "search.pharmacyAddressOrNamePlaceholder":
+    "ej. 123 Main St, Sacramento, CA o CVS",
+  "search.addressHint":
+    "Ingrese una dirección con ciudad y estado, o un nombre de clínica/farmacia con ciudad",
+  "search.addressOrNameRequired":
+    "Ingrese una dirección o un nombre de clínica/farmacia.",
   "search.locationLabel": "Su ubicación",
   "search.useMyLocation": "Usar mi ubicación",
   "search.locating": "Obteniendo ubicación…",

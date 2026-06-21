@@ -22,18 +22,6 @@ loadEnv();
 
 const DEFAULT_TX_URL = "https://www.pharmacy.texas.gov/downloads/phydsk.csv";
 
-function pickField(row: Record<string, string>, ...keys: string[]): string {
-  for (const key of keys) {
-    const exact = row[key];
-    if (exact?.trim()) return exact.trim();
-    const match = Object.entries(row).find(
-      ([k]) => k.toUpperCase() === key.toUpperCase()
-    );
-    if (match?.[1]?.trim()) return match[1].trim();
-  }
-  return "";
-}
-
 async function loadLicenseFile(): Promise<string> {
   const fileArg = process.argv.indexOf("--file");
   if (fileArg >= 0 && process.argv[fileArg + 1]) {

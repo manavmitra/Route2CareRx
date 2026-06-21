@@ -26,7 +26,7 @@ export function OtcStoreSearch() {
     async (params: LocationSearchParams) => {
       setLoading(true);
       setError(null);
-      setFilterQuery("");
+      setFilterQuery(params.name?.trim() ?? "");
 
       try {
         const query = buildLocationSearchParams(params);
@@ -88,6 +88,7 @@ export function OtcStoreSearch() {
         formLabel={t("store.formLabel")}
         submitLabel={t("store.find")}
         searchingLabel={t("store.searching")}
+        addressOrNamePlaceholder={t("search.pharmacyAddressOrNamePlaceholder")}
         accentClass="bg-violet-700 hover:bg-violet-800"
         onSearch={search}
         loading={loading}

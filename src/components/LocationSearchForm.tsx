@@ -12,6 +12,7 @@ export interface LocationSearchParams {
   address?: string;
   lat?: number;
   lng?: number;
+  name?: string;
 }
 
 interface LocationSearchFormProps {
@@ -21,10 +22,17 @@ interface LocationSearchFormProps {
   formLabel: string;
   submitLabel: string;
   searchingLabel: string;
+  addressOrNamePlaceholder: string;
   accentClass?: string;
   onSearch: (params: LocationSearchParams) => void;
   loading: boolean;
   error: string | null;
+}
+
+function looksLikeNameOnly(query: string): boolean {
+  const trimmed = query.trim();
+  if (!trimmed) return false;
+  return !/\d/.test(trimmed) && !trimmed.includes(",");
 }
 
 export function buildLocationSearchParams(
@@ -37,7 +45,7 @@ export function buildLocationSearchParams(
     search.set("zip", params.zip);
   } else if (params.mode === "address" && params.address) {
     search.set("address", params.address);
-  } else if (params.mode === "location" && params.lat != null && params.lng != null) {
+  } else   if (params.mode === "location" && params.lat != null && params.lng != null) {
     search.set("lat", String(params.lat));
     search.set("lng", String(params.lng));
   }
@@ -51,6 +59,7 @@ export function LocationSearchForm({
   formLabel,
   submitLabel,
   searchingLabel,
+  addressOrNamePlaceholder,
   accentClass = "bg-primary hover:bg-primary-dark",
   onSearch,
   loading,
@@ -59,7 +68,7 @@ export function LocationSearchForm({
   const { t, translateError } = useLanguage();
   const [mode, setMode] = useState<SearchMode>("zip");
   const [zip, setZip] = useState("");
-  const [address, setAddress] = useState("");
+  const [addressOrName, setAddressOrName] = useState("");
   const [radius, setRadius] = useState(defaultRadius);
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(
     null
@@ -115,12 +124,17 @@ export function LocationSearchForm({
     }
 
     if (mode === "address") {
-      const trimmed = address.trim();
-      if (trimmed.length < 5) {
-        setLocalError(t("search.addressRequired"));
+      const trimmed = addressOrName.trim();
+      if (trimmed.length < 2) {
+        setLocalError(t("search.addressOrNameRequired"));
         return;
       }
-      onSearch({ mode: "address", address: trimmed, radius });
+      onSearch({
+        mode: "address",
+        address: trimmed,
+        radius,
+        name: looksLikeNameOnly(trimmed) ? trimmed : undefined,
+      });
       return;
     }
 
@@ -142,7 +156,7 @@ export function LocationSearchForm({
     (mode === "zip"
       ? zip.length >= 5
       : mode === "address"
-        ? address.trim().length >= 5
+        ? addressOrName.trim().length >= 2
         : coords !== null);
 
   const modeOptions: { value: SearchMode; labelKey: string }[] = [
@@ -213,16 +227,16 @@ export function LocationSearchForm({
           {mode === "address" && (
             <>
               <label htmlFor={`${idPrefix}-address`} className="block text-sm font-medium mb-2">
-                {t("search.addressLabel")}
+                {t("search.addressOrNameLabel")}
               </label>
               <input
                 id={`${idPrefix}-address`}
-                type="text"
+                type="search"
                 autoComplete="street-address"
-                placeholder={t("search.addressPlaceholder")}
-                value={address}
+                placeholder={addressOrNamePlaceholder}
+                value={addressOrName}
                 onChange={(e) => {
-                  setAddress(e.target.value);
+                  setAddressOrName(e.target.value);
                   setLocalError(null);
                 }}
                 className="w-full px-4 py-3 rounded-xl border border-border bg-background text-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
@@ -253,6 +267,7 @@ export function LocationSearchForm({
               </div>
             </>
           )}
+
         </div>
 
         <div className="sm:w-40 shrink-0">
