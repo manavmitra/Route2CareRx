@@ -100,7 +100,7 @@ export function OtcProductList({ medication }: OtcProductListProps) {
                   <table className="w-full text-sm">
                     <thead className="bg-slate-50">
                       <tr>
-                        <th className="text-left p-3 font-semibold">Product</th>
+                        <th className="text-left p-3 font-semibold">Example product</th>
                         <th className="text-left p-3 font-semibold hidden sm:table-cell">
                           Form / strength
                         </th>

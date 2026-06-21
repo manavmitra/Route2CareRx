@@ -1,4 +1,7 @@
+"use client";
+
 import type { OtcMedication } from "@/lib/otc-types";
+import { useLanguage } from "@/lib/i18n/context";
 import { OtcProductList } from "./OtcProductList";
 import { RxNormLinks } from "./RxNormLinks";
 
@@ -7,6 +10,9 @@ interface OtcMedicationCardProps {
 }
 
 export function OtcMedicationCard({ medication }: OtcMedicationCardProps) {
+  const { t } = useLanguage();
+  const storeLabel = medication.commonExamples?.trim() || medication.name;
+
   return (
     <article className="bg-card rounded-2xl border border-border shadow-sm p-6 hover:shadow-md transition-shadow">
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
@@ -15,9 +21,6 @@ export function OtcMedicationCard({ medication }: OtcMedicationCardProps) {
             <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-violet-50 text-violet-800 text-xs font-medium">
               {medication.category}
             </span>
-            <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">
-              Active ingredient
-            </span>
             {medication.fdaLabelCount != null && medication.fdaLabelCount > 0 && (
               <span className="text-xs text-muted">
                 {medication.fdaLabelCount} FDA label
@@ -25,12 +28,13 @@ export function OtcMedicationCard({ medication }: OtcMedicationCardProps) {
               </span>
             )}
           </div>
-          <h3 className="text-xl font-semibold leading-tight">{medication.name}</h3>
-          {medication.commonExamples && (
-            <p className="text-sm text-muted mt-1">
-              Example products: {medication.commonExamples}
-            </p>
-          )}
+          <p className="text-xs font-medium uppercase tracking-wide text-muted mb-1">
+            {t("otc.exampleProducts")}
+          </p>
+          <h3 className="text-xl font-semibold leading-tight">{storeLabel}</h3>
+          <p className="text-sm text-muted mt-1">
+            {t("otc.activeIngredientLabel")}: {medication.name}
+          </p>
         </div>
       </div>
 
@@ -49,7 +53,9 @@ export function OtcMedicationCard({ medication }: OtcMedicationCardProps) {
         </div>
 
         <div>
-          <dt className="font-semibold text-foreground mb-1">Active ingredient</dt>
+          <dt className="font-semibold text-foreground mb-1">
+            {t("otc.activeIngredientLabel")}
+          </dt>
           <dd className="text-muted leading-relaxed">{medication.ingredients}</dd>
         </div>
 

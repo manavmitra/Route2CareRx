@@ -89,7 +89,9 @@ export const en: TranslationDict = {
   "otc.symptomHint":
     "Choose from {count} common symptoms to see recommended OTC options and safety information.",
   "otc.refineLabel": "Refine results (optional)",
-  "otc.refinePlaceholder": "e.g. ibuprofen, nasal spray…",
+  "otc.refinePlaceholder": "e.g. Tylenol, Advil, store brands…",
+  "otc.exampleProducts": "Example products",
+  "otc.activeIngredientLabel": "Active ingredient",
   "otc.guidanceFor": "Guidance for: {symptom}",
   "otc.considerFirst": "Usually consider first",
   "otc.otherOptions": "Other options",
@@ -275,7 +277,9 @@ export const es: TranslationDict = {
   "otc.symptomHint":
     "Elija entre {count} síntomas comunes para ver opciones OTC recomendadas e información de seguridad.",
   "otc.refineLabel": "Refinar resultados (opcional)",
-  "otc.refinePlaceholder": "ej. ibuprofeno, spray nasal…",
+  "otc.refinePlaceholder": "ej. Tylenol, Advil, marcas de tienda…",
+  "otc.exampleProducts": "Productos de ejemplo",
+  "otc.activeIngredientLabel": "Ingrediente activo",
   "otc.guidanceFor": "Orientación para: {symptom}",
   "otc.considerFirst": "Considere primero",
   "otc.otherOptions": "Otras opciones",
