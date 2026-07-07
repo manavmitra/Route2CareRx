@@ -77,30 +77,35 @@ export function OtcSymptomSearch({ symptoms }: OtcSymptomSearchProps) {
       </div>
 
       {entry && (
-        <div className="rounded-2xl border border-violet-200 bg-violet-50 p-6 space-y-4 text-sm">
-          <h3 className="font-semibold text-violet-900 text-base">
+        <details className="rounded-xl border border-violet-200 bg-violet-50/80 text-sm group">
+          <summary className="cursor-pointer px-4 py-3 font-medium text-violet-900 list-none [&::-webkit-details-marker]:hidden">
             {t("otc.guidanceFor", { symptom: labelSymptom(entry.symptom) })}
-          </h3>
-          <div>
-            <p className="font-medium text-violet-900">{t("otc.considerFirst")}</p>
-            <p className="text-violet-800 mt-1 leading-relaxed">{entry.considerFirst}</p>
-          </div>
-          {entry.otherOptions && (
+            <span className="ml-2 text-violet-600 text-xs font-normal group-open:hidden">
+              {t("otc.showGuidance")}
+            </span>
+          </summary>
+          <div className="px-4 pb-4 space-y-3 border-t border-violet-200/80 pt-3">
             <div>
-              <p className="font-medium text-violet-900">{t("otc.otherOptions")}</p>
-              <p className="text-violet-800 mt-1 leading-relaxed">{entry.otherOptions}</p>
+              <p className="font-medium text-violet-900">{t("otc.considerFirst")}</p>
+              <p className="text-violet-800 mt-0.5 leading-relaxed">{entry.considerFirst}</p>
             </div>
-          )}
-          {entry.avoidRedFlags && (
-            <div className="p-3 rounded-xl bg-red-50 border border-red-200">
-              <p className="font-medium text-red-900">{t("otc.avoidRedFlags")}</p>
-              <p className="text-red-800 mt-1 leading-relaxed">{entry.avoidRedFlags}</p>
-            </div>
-          )}
-          {entry.notes && (
-            <p className="text-violet-700 italic">{entry.notes}</p>
-          )}
-        </div>
+            {entry.otherOptions && (
+              <div>
+                <p className="font-medium text-violet-900">{t("otc.otherOptions")}</p>
+                <p className="text-violet-800 mt-0.5 leading-relaxed">{entry.otherOptions}</p>
+              </div>
+            )}
+            {entry.avoidRedFlags && (
+              <div className="p-3 rounded-lg bg-red-50 border border-red-200">
+                <p className="font-medium text-red-900">{t("otc.avoidRedFlags")}</p>
+                <p className="text-red-800 mt-0.5 leading-relaxed">{entry.avoidRedFlags}</p>
+              </div>
+            )}
+            {entry.notes && (
+              <p className="text-violet-700 italic text-xs">{entry.notes}</p>
+            )}
+          </div>
+        </details>
       )}
 
       {symptom && (
@@ -115,7 +120,7 @@ export function OtcSymptomSearch({ symptoms }: OtcSymptomSearchProps) {
               <p className="text-sm text-muted mt-2">{t("otc.noMatchHint")}</p>
             </div>
           ) : (
-            <ul className="space-y-4" aria-label="Medication results">
+            <ul className="space-y-3" aria-label="Medication results">
               {medications.map((med) => (
                 <li key={med.id}>
                   <OtcMedicationCard medication={med} />

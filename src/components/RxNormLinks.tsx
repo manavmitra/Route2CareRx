@@ -40,7 +40,7 @@ export function RxNormLinks({ drugName, dailyMedUrl }: RxNormLinkProps) {
   }, [drugName]);
 
   return (
-    <p className="mt-4 text-xs text-muted flex flex-wrap gap-x-3 gap-y-1">
+    <p className="text-xs text-muted flex flex-wrap gap-x-3 gap-y-1">
       <span className="font-medium text-foreground">{t("med.drugInfo")}</span>
       {rxnormUrl && (
         <a
