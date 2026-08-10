@@ -40,7 +40,7 @@ export function formatGoogleHours(
 ): string | null {
   const lines = hours?.weekdayDescriptions;
   if (!lines?.length) return null;
-  return lines.join("; ");
+  return lines.join("\n");
 }
 
 export function parseGooglePlace(

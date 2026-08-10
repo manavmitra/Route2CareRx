@@ -11,8 +11,11 @@ export type TranslationDict = Record<string, string>;
 
 export const en: TranslationDict = {
   "nav.clinics": "Find Clinics",
+  "nav.clinics.short": "Clinics",
   "nav.medications": "OTC Medications",
+  "nav.medications.short": "Medications",
   "nav.resources": "Additional Resources",
+  "nav.resources.short": "Resources",
   "nav.main": "Main navigation",
   "lang.switch": "Language",
 
@@ -153,8 +156,7 @@ export const en: TranslationDict = {
     "These trusted directories can help you find more free and low-cost care options, including charitable clinics, cancer screening, and mental health services.",
 
   "card.hours": "Hours of Operation",
-  "card.noHrsaHours": "No HRSA hours on file for this site.",
-  "card.dailySchedule": "Daily schedule",
+  "card.noDailyHours": "Daily hours are not available for this clinic.",
   "card.services": "Services Offered",
   "card.servicesNote":
     "Based on HRSA grant programs and site type — call to confirm specific services.",
@@ -214,8 +216,11 @@ export const en: TranslationDict = {
 
 export const es: TranslationDict = {
   "nav.clinics": "Buscar clínicas",
+  "nav.clinics.short": "Clínicas",
   "nav.medications": "Medicamentos OTC",
+  "nav.medications.short": "OTC",
   "nav.resources": "Recursos adicionales",
+  "nav.resources.short": "Recursos",
   "nav.main": "Navegación principal",
   "lang.switch": "Idioma",
 
@@ -357,8 +362,7 @@ export const es: TranslationDict = {
     "Estos directorios confiables pueden ayudarle a encontrar más opciones de atención gratuita y de bajo costo, incluidas clínicas benéficas, detección de cáncer y servicios de salud mental.",
 
   "card.hours": "Horario de atención",
-  "card.noHrsaHours": "No hay horarios HRSA registrados para este sitio.",
-  "card.dailySchedule": "Horario diario",
+  "card.noDailyHours": "No hay horario diario disponible para esta clínica.",
   "card.services": "Servicios ofrecidos",
   "card.servicesNote":
     "Según programas HRSA y tipo de sitio — llame para confirmar servicios específicos.",

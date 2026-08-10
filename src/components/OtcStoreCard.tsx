@@ -3,6 +3,7 @@
 import type { OtcStore } from "@/lib/pharmacy-types";
 import { useLanguage } from "@/lib/i18n/context";
 import { formatDistance, formatPhone } from "@/lib/utils";
+import { HoursSchedule } from "./HoursSchedule";
 
 interface OtcStoreCardProps {
   store: OtcStore;
@@ -67,10 +68,10 @@ export function OtcStoreCard({ store }: OtcStoreCardProps) {
       )}
 
       {store.hours && (
-        <p className="mt-2 text-sm">
-          <span className="font-medium">{t("card.hours")}</span>{" "}
-          <span className="text-muted">{store.hours}</span>
-        </p>
+        <div className="mt-3">
+          <p className="text-sm font-medium mb-2">{t("card.hours")}</p>
+          <HoursSchedule hours={store.hours} />
+        </div>
       )}
 
       <div className="mt-5 flex flex-wrap gap-3">
