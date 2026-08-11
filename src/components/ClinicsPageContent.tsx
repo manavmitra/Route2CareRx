@@ -22,6 +22,16 @@ export function ClinicsPageHero() {
   );
 }
 
+export function ClinicsDisclaimer() {
+  const { t } = useLanguage();
+
+  return (
+    <div className="mb-6 p-4 rounded-xl bg-amber-50 border border-amber-200 text-sm text-amber-900">
+      <strong>{t("clinics.disclaimerLead")}</strong> {t("clinics.disclaimerBody")}
+    </div>
+  );
+}
+
 export function ClinicsPageSteps() {
   const { t } = useLanguage();
 

@@ -27,6 +27,9 @@ export const en: TranslationDict = {
   "clinics.step2": "Browse nearby clinics with services, hours, and contact info.",
   "clinics.step3": "Call ahead to confirm eligibility and hours.",
   "clinics.howItWorks": "How it works",
+  "clinics.disclaimerLead": "Costs vary by clinic.",
+  "clinics.disclaimerBody":
+    "Route2CareRx lists clinics that may offer free or low-cost care, but we do not set prices and are not responsible for what a clinic charges. Fees depend on your income, insurance, and services received — always call the clinic ahead of time to confirm eligibility and expected costs.",
 
   "search.zipLabel": "Your ZIP Code",
   "search.zipHint": "Enter any US ZIP code, including territories",
@@ -233,6 +236,9 @@ export const es: TranslationDict = {
     "Explore clínicas cercanas con servicios, horarios e información de contacto.",
   "clinics.step3": "Llame con anticipación para confirmar elegibilidad y horarios.",
   "clinics.howItWorks": "Cómo funciona",
+  "clinics.disclaimerLead": "Los costos varían según la clínica.",
+  "clinics.disclaimerBody":
+    "Route2CareRx enumera clínicas que pueden ofrecer atención gratuita o de bajo costo, pero no fijamos precios ni somos responsables de lo que cobre una clínica. Las tarifas dependen de sus ingresos, seguro y servicios recibidos — siempre llame a la clínica con anticipación para confirmar elegibilidad y costos esperados.",
 
   "search.zipLabel": "Su código postal",
   "search.zipHint": "Ingrese cualquier código postal de EE. UU., incluidos territorios",
