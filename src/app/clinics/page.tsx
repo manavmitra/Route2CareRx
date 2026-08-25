@@ -1,7 +1,6 @@
-import { ClinicSearch } from "@/components/ClinicSearch";
 import { AppHeader } from "@/components/AppHeader";
 import { AppFooter } from "@/components/AppFooter";
-import { ClinicsPageHero, ClinicsPageSteps, ClinicsDisclaimer } from "@/components/ClinicsPageContent";
+import { ClinicsPageMain } from "@/components/ClinicsPageContent";
 
 export const metadata = {
   title: "Find Free & Low-Cost Clinics — Route2CareRx",
@@ -11,16 +10,9 @@ export const metadata = {
 
 export default function ClinicsPage() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       <AppHeader />
-      <ClinicsPageHero />
-
-      <main className="flex-1 max-w-5xl mx-auto px-4 py-8 pb-16 w-full">
-        <ClinicsDisclaimer />
-        <ClinicSearch />
-        <ClinicsPageSteps />
-      </main>
-
+      <ClinicsPageMain />
       <AppFooter />
     </div>
   );

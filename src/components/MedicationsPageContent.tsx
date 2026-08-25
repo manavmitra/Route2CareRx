@@ -1,26 +1,10 @@
 "use client";
 
+import { useState } from "react";
+import { PageHero } from "@/components/PageHero";
+import { PrivacyFooter } from "@/components/PrivacyFooter";
+import { OtcSection } from "@/components/OtcSection";
 import { useLanguage } from "@/lib/i18n/context";
-
-export function MedicationsPageHero() {
-  const { t } = useLanguage();
-
-  return (
-    <header className="bg-gradient-to-br from-violet-700 via-purple-600 to-indigo-700 text-white">
-      <div className="max-w-5xl mx-auto px-4 py-10 md:py-14">
-        <p className="text-violet-100 text-sm font-medium tracking-wide uppercase mb-3">
-          {t("med.eyebrow")}
-        </p>
-        <h1 className="text-3xl md:text-4xl font-bold leading-tight max-w-2xl">
-          {t("med.title")}
-        </h1>
-        <p className="mt-3 text-base md:text-lg text-violet-50 max-w-2xl leading-relaxed">
-          {t("med.subtitle")}
-        </p>
-      </div>
-    </header>
-  );
-}
 
 export function MedicationsDisclaimer() {
   const { t } = useLanguage();
@@ -29,5 +13,39 @@ export function MedicationsDisclaimer() {
     <div className="mb-6 p-4 rounded-xl bg-amber-50 border border-amber-200 text-sm text-amber-900">
       <strong>{t("med.disclaimerLead")}</strong> {t("med.disclaimerBody")}
     </div>
+  );
+}
+
+interface MedicationsPageMainProps {
+  symptoms: string[];
+}
+
+export function MedicationsPageMain({ symptoms }: MedicationsPageMainProps) {
+  const { t, symptomLabel } = useLanguage();
+  const [symptom, setSymptom] = useState("");
+
+  const heroTitle = symptom
+    ? t("med.heroTitleSymptom", { symptom: symptomLabel(symptom) })
+    : t("med.heroTitle");
+
+  const heroSubtitle = `${t("med.disclaimerLead")} ${t("med.disclaimerBody")}`;
+
+  return (
+    <>
+      <PageHero
+        variant="medications"
+        badge={t("med.eyebrow")}
+        title={heroTitle}
+        subtitle={heroSubtitle}
+        showHeart={false}
+        rounded
+      />
+
+      <main className="flex-1 max-w-5xl mx-auto px-4 py-6 pb-4 w-full">
+        <MedicationsDisclaimer />
+        <OtcSection symptoms={symptoms} onSymptomChange={setSymptom} />
+        <PrivacyFooter />
+      </main>
+    </>
   );
 }

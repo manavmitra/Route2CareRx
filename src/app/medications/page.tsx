@@ -1,10 +1,6 @@
 import { AppHeader } from "@/components/AppHeader";
 import { AppFooter } from "@/components/AppFooter";
-import { OtcSection } from "@/components/OtcSection";
-import {
-  MedicationsDisclaimer,
-  MedicationsPageHero,
-} from "@/components/MedicationsPageContent";
+import { MedicationsPageMain } from "@/components/MedicationsPageContent";
 import { getSymptoms } from "@/lib/otc-data";
 
 export const metadata = {
@@ -17,15 +13,9 @@ export default function MedicationsPage() {
   const symptoms = getSymptoms();
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       <AppHeader />
-      <MedicationsPageHero />
-
-      <main className="flex-1 max-w-5xl mx-auto px-4 py-8 pb-16 w-full">
-        <MedicationsDisclaimer />
-        <OtcSection symptoms={symptoms} />
-      </main>
-
+      <MedicationsPageMain symptoms={symptoms} />
       <AppFooter />
     </div>
   );

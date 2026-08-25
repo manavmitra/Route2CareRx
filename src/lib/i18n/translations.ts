@@ -10,16 +10,21 @@ export const LOCALE_STORAGE_KEY = "route2carerx-locale";
 export type TranslationDict = Record<string, string>;
 
 export const en: TranslationDict = {
-  "nav.clinics": "Find Clinics",
+  "nav.clinics": "Clinics",
   "nav.clinics.short": "Clinics",
-  "nav.medications": "OTC Medications",
+  "nav.medications": "Medications",
   "nav.medications.short": "Medications",
-  "nav.resources": "Additional Resources",
+  "nav.resources": "Resources",
   "nav.resources.short": "Resources",
   "nav.main": "Main navigation",
   "lang.switch": "Language",
 
   "clinics.eyebrow": "Healthcare access for everyone",
+  "clinics.heroTitle": "Nearby clinics",
+  "clinics.heroSubtitleDefault":
+    "Search by ZIP code, address, or your current location.",
+  "clinics.heroSubtitleResults":
+    "Showing low-cost care near {location} within {radius} miles.",
   "clinics.title": "Find free & low-cost clinics near you",
   "clinics.subtitle":
     "Search federally funded community health centers, sliding-fee clinics, and UC Davis student-run clinics — no insurance required.",
@@ -76,6 +81,18 @@ export const en: TranslationDict = {
   "search.additionalResources": "additional resources",
 
   "med.eyebrow": "Patient education",
+  "med.heroTitle": "OTC medications",
+  "med.heroTitleSymptom": "{symptom} relief options",
+  "med.heroSubtitle":
+    "Search by symptom and find nearby pharmacies for over-the-counter options.",
+  "med.symptomTag": "Symptom: {symptom}",
+  "med.recommendedOtc": "Recommended OTC options",
+  "med.recommendedOtcDesc":
+    "These are common over-the-counter active ingredients that may help.",
+  "med.whenToGetCare": "When to get medical care",
+  "med.whenToGetCareIntro": "Seek medical care right away if you have any of the following:",
+  "med.call911": "Call 911 for any life-threatening symptoms.",
+  "med.findPharmacies": "Find nearby pharmacies",
   "med.title": "Over-the-counter medication guide",
   "med.subtitle":
     "Conventional OTC medications only — search by symptom for guidance, or find nearby pharmacies and drugstores by ZIP, address, or your location.",
@@ -151,6 +168,13 @@ export const en: TranslationDict = {
     "Pharmacy locations come from official state licensing records and trusted public databases. Availability may vary, so call ahead to confirm.",
 
   "resources.eyebrow": "More ways to get care",
+  "resources.exploreTitle": "Explore resources",
+  "resources.exploreSubtitle":
+    "Trusted directories and support services to help you access free and low-cost care beyond our clinic search.",
+  "resources.categoriesTitle": "Care categories",
+  "resources.categoriesDesc": "Browse resources to find the help you need.",
+  "resources.popularTitle": "Popular resources",
+  "resources.viewAll": "View all",
   "resources.title": "Additional resources",
   "resources.subtitle":
     "Trusted national directories to help you find free and low-cost care beyond our clinic search — charitable clinics, cancer screening, mental health, and more.",
@@ -169,6 +193,11 @@ export const en: TranslationDict = {
   "card.call": "Call {phone}",
   "card.website": "Visit website ↗",
   "card.directions": "Get directions ↗",
+  "card.directionsShort": "Directions",
+  "card.details": "Details",
+  "card.distanceAway": "{n} miles away",
+  "card.distanceAwayLess": "Less than 0.1 miles away",
+  "card.hoursAvailable": "Hours listed — call to confirm",
   "card.callConfirm": "Call the clinic to confirm when they are open.",
   "card.tryExternal":
     " Try FreeClinics.com or NAFC for charitable clinics that may list daily hours.",
@@ -200,6 +229,35 @@ export const en: TranslationDict = {
   "dist.mi": "{n} mi",
   "dist.roundMi": "{n} mi",
 
+  "filter.filters": "Filters",
+  "filter.womensHealth": "Women's health",
+  "filter.hasHours": "Has hours listed",
+  "filter.slidingFee": "Sliding fee",
+  "filter.sortBy": "Sort by:",
+  "filter.sortDistance": "Distance",
+  "filter.sortName": "Name",
+
+  "detail.back": "Back",
+  "detail.backToSearch": "Back to clinic search",
+  "detail.notFound": "Clinic details are not available. Please search again and select a clinic.",
+  "detail.studentRun": "Student-run",
+  "detail.locationContact": "Location & contact",
+  "detail.phone": "Phone",
+  "detail.mapTitle": "Clinic location map",
+  "detail.viewLargerMap": "View larger map",
+  "detail.callClinic": "Call clinic",
+  "detail.eligibility": "Eligibility & cost",
+  "detail.eligibilityNote": "Call ahead to confirm eligibility, services, and expected costs.",
+  "detail.whatToBring": "What to bring",
+  "detail.bringId": "Photo ID (if you have one)",
+  "detail.bringIncome": "Proof of income (optional, for sliding-fee scale)",
+  "detail.bringInsurance": "Insurance card (optional)",
+  "detail.bringMeds": "List of current medications",
+
+  "privacy.short": "Your information is private and secure.",
+  "privacy.full":
+    "Your information is private and secure. We never share your personal information.",
+
   "footer.data":
     "Clinic data from HRSA Health Center Service Delivery Sites. OTC active ingredients from openFDA Drug Labels and DailyMed; product listings from openFDA NDC Directory; store locations from CMS NPI Registry. Route2CareRx is not affiliated with HRSA or any healthcare provider.",
   "footer.verify":
@@ -228,6 +286,11 @@ export const es: TranslationDict = {
   "lang.switch": "Idioma",
 
   "clinics.eyebrow": "Acceso a la salud para todos",
+  "clinics.heroTitle": "Clínicas cercanas",
+  "clinics.heroSubtitleDefault":
+    "Busque por código postal, dirección o su ubicación actual.",
+  "clinics.heroSubtitleResults":
+    "Mostrando atención de bajo costo cerca de {location} en un radio de {radius} millas.",
   "clinics.title": "Encuentre clínicas gratuitas y de bajo costo cerca de usted",
   "clinics.subtitle":
     "Busque centros comunitarios de salud financiados federalmente, clínicas con tarifas escalonadas y clínicas estudiantiles de UC Davis — no se requiere seguro.",
@@ -285,6 +348,18 @@ export const es: TranslationDict = {
   "search.additionalResources": "recursos adicionales",
 
   "med.eyebrow": "Educación para pacientes",
+  "med.heroTitle": "Medicamentos OTC",
+  "med.heroTitleSymptom": "Opciones para {symptom}",
+  "med.heroSubtitle":
+    "Busque por síntoma y encuentre farmacias cercanas con opciones de venta libre.",
+  "med.symptomTag": "Síntoma: {symptom}",
+  "med.recommendedOtc": "Opciones OTC recomendadas",
+  "med.recommendedOtcDesc":
+    "Estos son ingredientes activos de venta libre comunes que pueden ayudar.",
+  "med.whenToGetCare": "Cuándo buscar atención médica",
+  "med.whenToGetCareIntro": "Busque atención médica de inmediato si tiene alguno de los siguientes:",
+  "med.call911": "Llame al 911 ante síntomas que pongan en riesgo la vida.",
+  "med.findPharmacies": "Encontrar farmacias cercanas",
   "med.title": "Guía de medicamentos de venta libre",
   "med.subtitle":
     "Solo medicamentos OTC convencionales — busque por síntoma o encuentre farmacias cercanas por código postal, dirección o ubicación.",
@@ -360,12 +435,22 @@ export const es: TranslationDict = {
     "Las ubicaciones provienen de registros oficiales de licencias estatales y bases de datos públicas confiables. La disponibilidad puede variar; llame con anticipación para confirmar.",
 
   "resources.eyebrow": "Más formas de obtener atención",
+  "resources.heroTitle": "Recursos adicionales",
+  "resources.heroSubtitle":
+    "Directorios confiables para clínicas gratuitas, atención benéfica, salud mental y más.",
   "resources.title": "Recursos adicionales",
   "resources.subtitle":
     "Directorios nacionales confiables para encontrar atención gratuita y de bajo costo — clínicas benéficas, detección de cáncer, salud mental y más.",
   "resources.heading": "Recursos adicionales",
   "resources.desc":
     "Estos directorios confiables pueden ayudarle a encontrar más opciones de atención gratuita y de bajo costo, incluidas clínicas benéficas, detección de cáncer y servicios de salud mental.",
+  "resources.exploreTitle": "Explorar recursos",
+  "resources.exploreSubtitle":
+    "Directorios confiables y servicios de apoyo para acceder a atención gratuita y de bajo costo más allá de nuestra búsqueda de clínicas.",
+  "resources.categoriesTitle": "Categorías de atención",
+  "resources.categoriesDesc": "Explore recursos para encontrar la ayuda que necesita.",
+  "resources.popularTitle": "Recursos populares",
+  "resources.viewAll": "Ver todos",
 
   "card.hours": "Horario de atención",
   "card.noDailyHours": "No hay horario diario disponible para esta clínica.",
@@ -378,6 +463,11 @@ export const es: TranslationDict = {
   "card.call": "Llamar {phone}",
   "card.website": "Visitar sitio web ↗",
   "card.directions": "Cómo llegar ↗",
+  "card.directionsShort": "Cómo llegar",
+  "card.details": "Detalles",
+  "card.distanceAway": "A {n} millas",
+  "card.distanceAwayLess": "A menos de 0.1 millas",
+  "card.hoursAvailable": "Horario disponible — llame para confirmar",
   "card.callConfirm": "Llame a la clínica para confirmar horarios.",
   "card.tryExternal":
     " Pruebe FreeClinics.com o NAFC para clínicas benéficas con horarios diarios.",
@@ -409,6 +499,35 @@ export const es: TranslationDict = {
   "dist.lessThan": "Menos de 0.1 mi",
   "dist.mi": "{n} mi",
   "dist.roundMi": "{n} mi",
+
+  "filter.filters": "Filtros",
+  "filter.womensHealth": "Salud de la mujer",
+  "filter.hasHours": "Con horario listado",
+  "filter.slidingFee": "Tarifa escalonada",
+  "filter.sortBy": "Ordenar por:",
+  "filter.sortDistance": "Distancia",
+  "filter.sortName": "Nombre",
+
+  "detail.back": "Atrás",
+  "detail.backToSearch": "Volver a la búsqueda",
+  "detail.notFound": "Los detalles de la clínica no están disponibles. Busque de nuevo y seleccione una clínica.",
+  "detail.studentRun": "Dirigida por estudiantes",
+  "detail.locationContact": "Ubicación y contacto",
+  "detail.phone": "Teléfono",
+  "detail.mapTitle": "Mapa de la clínica",
+  "detail.viewLargerMap": "Ver mapa más grande",
+  "detail.callClinic": "Llamar a la clínica",
+  "detail.eligibility": "Elegibilidad y costo",
+  "detail.eligibilityNote": "Llame con anticipación para confirmar elegibilidad, servicios y costos esperados.",
+  "detail.whatToBring": "Qué llevar",
+  "detail.bringId": "Identificación con foto (si tiene)",
+  "detail.bringIncome": "Comprobante de ingresos (opcional, para tarifa escalonada)",
+  "detail.bringInsurance": "Tarjeta de seguro (opcional)",
+  "detail.bringMeds": "Lista de medicamentos actuales",
+
+  "privacy.short": "Su información es privada y segura.",
+  "privacy.full":
+    "Su información es privada y segura. Nunca compartimos su información personal.",
 
   "footer.data":
     "Datos de clínicas de HRSA. Ingredientes OTC de openFDA y DailyMed; productos del Directorio NDC de openFDA; tiendas del Registro NPI de CMS. Route2CareRx no está afiliado con HRSA ni ningún proveedor de salud.",

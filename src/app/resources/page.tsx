@@ -1,7 +1,10 @@
 import { AppHeader } from "@/components/AppHeader";
 import { AppFooter } from "@/components/AppFooter";
 import { ExternalResources } from "@/components/ExternalResources";
-import { ResourcesPageHero } from "@/components/ResourcesPageContent";
+import {
+  ResourcesPageHero,
+  ResourcesPageFooter,
+} from "@/components/ResourcesPageContent";
 import { EXTERNAL_RESOURCES } from "@/lib/types";
 
 export const metadata = {
@@ -12,12 +15,13 @@ export const metadata = {
 
 export default function ResourcesPage() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       <AppHeader />
       <ResourcesPageHero />
 
-      <main className="flex-1 max-w-5xl mx-auto px-4 py-8 pb-16 w-full">
+      <main className="flex-1 max-w-5xl mx-auto px-4 py-6 pb-4 w-full">
         <ExternalResources resources={EXTERNAL_RESOURCES} />
+        <ResourcesPageFooter />
       </main>
 
       <AppFooter />

@@ -8,11 +8,14 @@ export function LanguageSwitcher() {
 
   if (!mounted) {
     return (
-      <div className="flex items-center gap-1 shrink-0" aria-hidden>
+      <div
+        className="inline-flex items-center rounded-full border border-border bg-slate-50 p-0.5 shrink-0"
+        aria-hidden
+      >
         {LOCALES.map(({ code }) => (
           <span
             key={code}
-            className="px-2 py-1 rounded-md text-xs font-semibold invisible"
+            className="px-3 py-1 rounded-full text-xs font-semibold invisible"
           >
             {code.toUpperCase()}
           </span>
@@ -23,7 +26,7 @@ export function LanguageSwitcher() {
 
   return (
     <div
-      className="flex items-center gap-1 shrink-0"
+      className="inline-flex items-center rounded-full border border-border bg-slate-50 p-0.5 shrink-0"
       role="group"
       aria-label={t("lang.switch")}
     >
@@ -34,10 +37,10 @@ export function LanguageSwitcher() {
             key={code}
             type="button"
             onClick={() => setLocale(code)}
-            className={`px-2 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
+            className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors cursor-pointer ${
               active
-                ? "bg-teal-100 text-primary-dark"
-                : "text-muted hover:text-foreground hover:bg-slate-100"
+                ? "bg-teal-100 text-primary-dark shadow-sm"
+                : "text-muted hover:text-foreground"
             }`}
             aria-pressed={active}
             lang={code}

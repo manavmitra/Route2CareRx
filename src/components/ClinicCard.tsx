@@ -1,9 +1,10 @@
 "use client";
 
 import type { Clinic } from "@/lib/types";
-import { formatPhone } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/i18n/context";
-import { HoursSchedule } from "./HoursSchedule";
+import { saveClinicForDetail } from "@/lib/clinic-session";
+import { LocationPinIcon, SendIcon } from "./icons/NavIcons";
 
 interface ClinicCardProps {
   clinic: Clinic;
@@ -22,175 +23,116 @@ function costKey(level: string): string {
   }
 }
 
-function costDescKey(level: string): string {
-  switch (level) {
-    case "free":
-      return "cost.freeDesc";
-    case "sliding_scale":
-      return "cost.slidingDesc";
-    case "low_cost":
-      return "cost.lowDesc";
-    default:
-      return "";
-  }
-}
-
-function sourceKey(source: string): string {
-  switch (source) {
-    case "hrsa_fqhc":
-      return "source.hrsaFqhc";
-    case "hrsa_lookalike":
-      return "source.hrsaLookalike";
-    case "cms_rural":
-      return "source.cmsRural";
-    case "uc_davis_student_run":
-      return "source.ucDavis";
-    default:
-      return source;
-  }
-}
-
-function formatDistanceLocalized(
+function formatDistanceAway(
   miles: number,
   t: (key: string, vars?: Record<string, string | number>) => string
 ): string {
-  if (miles < 0.1) return t("dist.lessThan");
-  if (miles < 10) return t("dist.mi", { n: miles.toFixed(1) });
-  return t("dist.roundMi", { n: Math.round(miles) });
+  if (miles < 0.1) return t("card.distanceAwayLess");
+  if (miles < 10) return t("card.distanceAway", { n: miles.toFixed(1) });
+  return t("card.distanceAway", { n: String(Math.round(miles)) });
+}
+
+function clinicIcon(clinic: Clinic): string {
+  if (clinic.source === "uc_davis_student_run") return "🎓";
+  if (clinic.services.some((s) => /women|reproductive|obgyn/i.test(s))) return "🌿";
+  return "👥";
+}
+
+function mapsUrl(clinic: Clinic): string {
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+    `${clinic.address}, ${clinic.city}, ${clinic.state} ${clinic.zip}`
+  )}`;
 }
 
 export function ClinicCard({ clinic }: ClinicCardProps) {
   const { t } = useLanguage();
-  const phone = formatPhone(clinic.phone);
-  const website = clinic.website?.startsWith("http")
-    ? clinic.website
-    : clinic.website
-      ? `https://${clinic.website}`
-      : null;
+  const router = useRouter();
+  const hasHours = (clinic.hours_of_operation ?? []).length > 0;
+  const costLabel = t(costKey(clinic.cost_level));
+  const showSlidingBadge =
+    clinic.cost_level === "sliding_scale" || clinic.cost_level === "free";
 
-  const dailyHours = clinic.hours_of_operation ?? [];
-  const hasDailyHours = dailyHours.length > 0;
-  const isUcDavis = clinic.source === "uc_davis_student_run";
-
-  const costKeyName = costKey(clinic.cost_level);
-  const costDescKeyName = costDescKey(clinic.cost_level);
-  const sourceKeyName = sourceKey(clinic.source);
+  const handleDetails = () => {
+    saveClinicForDetail(clinic);
+    router.push(`/clinics/${clinic.id}`);
+  };
 
   return (
-    <article className="bg-card rounded-2xl border border-border shadow-sm p-6 hover:shadow-md transition-shadow">
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-        <div className="flex-1 min-w-0">
-          <h3 className="text-xl font-semibold leading-tight">{clinic.name}</h3>
-          {clinic.organization_name &&
-            clinic.organization_name !== clinic.name && (
-              <p className="text-sm text-muted mt-0.5">
-                {clinic.organization_name}
-              </p>
-            )}
-        </div>
-        {clinic.distance_miles != null && (
-          <span className="inline-flex items-center px-3 py-1 rounded-full bg-teal-50 text-primary-dark text-sm font-medium whitespace-nowrap">
-            {formatDistanceLocalized(clinic.distance_miles, t)}
-          </span>
-        )}
-      </div>
-
-      <div className="mt-4 flex flex-wrap gap-2">
-        <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-blue-50 text-accent text-xs font-medium">
-          {t(costKeyName)}
-        </span>
-        <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">
-          {t(sourceKeyName)}
-        </span>
-      </div>
-
-      {costDescKeyName && (
-        <p className="mt-2 text-xs text-muted">{t(costDescKeyName)}</p>
-      )}
-
-      <address className="mt-4 not-italic text-sm leading-relaxed">
-        <p>
-          {clinic.address}
-          <br />
-          {clinic.city}, {clinic.state} {clinic.zip}
-        </p>
-      </address>
-
-      <div className="mt-3 flex flex-wrap gap-4 text-sm">
-        {phone && (
-          <a
-            href={`tel:${clinic.phone?.replace(/\D/g, "")}`}
-            className="text-accent hover:underline font-medium"
-          >
-            {phone}
-          </a>
-        )}
-        {website && (
-          <a
-            href={website}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-accent hover:underline font-medium"
-          >
-            {t("card.website")}
-          </a>
-        )}
-        <a
-          href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-            `${clinic.address}, ${clinic.city}, ${clinic.state} ${clinic.zip}`
-          )}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-accent hover:underline font-medium"
+    <article className="bg-card rounded-2xl border border-border shadow-sm p-4 md:p-5">
+      <div className="flex gap-3">
+        <div
+          className="shrink-0 w-14 h-14 rounded-xl bg-teal-50 flex items-center justify-center text-2xl"
+          aria-hidden
         >
-          {t("card.directions")}
-        </a>
-      </div>
+          {clinicIcon(clinic)}
+        </div>
 
-      <div className="mt-5">
-        <h4 className="text-sm font-semibold mb-2">{t("card.hours")}</h4>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2">
+            <h3 className="text-lg font-bold leading-tight">{clinic.name}</h3>
+            {showSlidingBadge && (
+              <span className="inline-flex items-center gap-1 shrink-0 rounded-full bg-emerald-50 text-emerald-800 text-xs font-medium px-2 py-1">
+                <span aria-hidden>$</span>
+                {costLabel}
+              </span>
+            )}
+          </div>
 
-        {hasDailyHours ? (
-          <>
-            <HoursSchedule hours={dailyHours} />
-            <p className="mt-2 text-xs text-muted">
-              {isUcDavis ? t("hours.ucDavisFootnote") : t("hours.dailyFootnote")}
-            </p>
-          </>
-        ) : (
-          <p className="text-sm text-muted">
-            {phone ? t("card.callConfirm") : t("card.noDailyHours")}
-            {!phone ? t("card.tryExternal") : ""}
+          <p className="mt-1 text-sm">
+            {hasHours ? (
+              <span className="text-emerald-700 font-medium">
+                <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1.5 align-middle" />
+                {t("card.hoursAvailable")}
+              </span>
+            ) : (
+              <span className="text-muted">{t("card.callConfirm")}</span>
+            )}
           </p>
-        )}
+
+          {clinic.distance_miles != null && (
+            <p className="mt-1 text-sm text-foreground flex items-center gap-1">
+              <LocationPinIcon className="w-3.5 h-3.5 text-muted" />
+              {formatDistanceAway(clinic.distance_miles, t)}
+            </p>
+          )}
+
+          <p className="mt-0.5 text-sm text-muted">
+            {clinic.address}, {clinic.city}, {clinic.state} {clinic.zip}
+          </p>
+        </div>
       </div>
 
       {clinic.services.length > 0 && (
-        <div className="mt-5">
-          <h4 className="text-sm font-semibold mb-1">{t("card.services")}</h4>
-          <p className="text-xs text-muted mb-2">
-            {isUcDavis ? t("card.servicesNoteUcDavis") : t("card.servicesNote")}
-          </p>
-          <ul className="flex flex-wrap gap-2">
-            {clinic.services.map((service) => (
-              <li
-                key={service}
-                className="px-2.5 py-1 rounded-md bg-slate-50 border border-border text-xs text-slate-700"
-              >
-                {service}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ul className="mt-3 flex flex-wrap gap-1.5">
+          {clinic.services.slice(0, 4).map((service) => (
+            <li
+              key={service}
+              className="px-2.5 py-1 rounded-full border border-teal-200 bg-teal-50/60 text-teal-900 text-xs font-medium"
+            >
+              {service}
+            </li>
+          ))}
+        </ul>
       )}
 
-      {clinic.location_setting &&
-        !clinic.location_setting.toLowerCase().includes("all other") && (
-          <p className="mt-4 text-sm text-muted">
-            <span className="font-medium text-foreground">{t("card.setting")}</span>{" "}
-            {clinic.location_setting}
-          </p>
-        )}
+      <div className="mt-4 grid grid-cols-2 gap-2">
+        <button
+          type="button"
+          onClick={handleDetails}
+          className="px-4 py-2.5 rounded-xl border border-border bg-card text-sm font-semibold hover:bg-slate-50 transition-colors cursor-pointer"
+        >
+          {t("card.details")}
+        </button>
+        <a
+          href={mapsUrl(clinic)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition-colors"
+        >
+          <SendIcon className="w-4 h-4" />
+          {t("card.directionsShort")}
+        </a>
+      </div>
     </article>
   );
 }

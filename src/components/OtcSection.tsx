@@ -6,9 +6,10 @@ import { useLanguage } from "@/lib/i18n/context";
 
 interface OtcSectionProps {
   symptoms: string[];
+  onSymptomChange?: (symptom: string) => void;
 }
 
-export function OtcSection({ symptoms }: OtcSectionProps) {
+export function OtcSection({ symptoms, onSymptomChange }: OtcSectionProps) {
   const { t } = useLanguage();
 
   return (
@@ -20,10 +21,10 @@ export function OtcSection({ symptoms }: OtcSectionProps) {
           </h3>
           <p className="mt-1 text-muted text-sm max-w-2xl">{t("med.symptomDesc")}</p>
         </div>
-        <OtcSymptomSearch symptoms={symptoms} />
+        <OtcSymptomSearch symptoms={symptoms} onSymptomChange={onSymptomChange} />
       </div>
 
-      <hr className="border-border" />
+      <hr className="border-border" id="pharmacies" />
 
       <div aria-labelledby="otc-stores-heading">
         <div className="mb-6">
